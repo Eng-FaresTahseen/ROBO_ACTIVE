@@ -597,35 +597,217 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Print Media Queries */
+        /* Print Media Queries (Natural Website Layout) */
         @media print {
-            body { background: white; color: black; font-size: 12pt; }
-            .navbar, .btn, .hero-btns { display: none !important; }
-            .hero { height: auto; background: none; color: black; padding: 50px 0; }
-            .hero h1 { -webkit-text-fill-color: black; font-size: 36pt; }
-            .section { padding: 30px 0; page-break-inside: avoid; }
-            .section-break { page-break-before: always; }
-            .bg-dark { background: white !important; color: black !important; }
-            .bg-dark .section-title, .bg-dark .lead-text { color: black !important; }
-            .card, .dept-card, .timeline-content { box-shadow: none; border: 1px solid #DDD; }
-            .timeline::after { left: 0; }
-            .timeline-item { width: 100%; padding-left: 30px; }
-            .timeline-item.right { left: 0; }
-            .timeline-item::after { left: -10px; }
-            .integration-wrapper { height: auto; display: block; text-align: center; }
-            .integration-node { position: static; transform: none; margin: 20px auto; width: 80%; }
-            .conclusion { background: white; color: black; padding: 50px 0; }
-            .conclusion h2 { color: black; font-size: 24pt; }
-            .svg-diagram { padding: 0; box-shadow: none; }
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            /* General Print Rules */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
             
-            /* Page Numbers */
             @page {
-                size: A4;
-                margin: 2cm;
-                @bottom-center {
-                    content: "Page " counter(page);
-                }
+                size: A4 portrait;
+                margin: 10mm;
+            }
+            
+            body {
+                background-color: #0A192F !important;
+                color: #F8F9FA !important;
+                font-size: 11pt;
+                line-height: 1.5;
+            }
+            
+            .navbar, .btn, .hero-btns, .integration-lines {
+                display: none !important;
+            }
+            
+            /* Remove forced heights and let layout flow naturally */
+            .section {
+                padding: 40px 0 !important;
+                min-height: auto !important;
+                height: auto !important;
+                display: block !important;
+                page-break-inside: auto !important;
+                break-inside: auto !important;
+            }
+            
+            .hero {
+                height: auto !important;
+                min-height: 600px !important;
+                padding: 100px 20px !important;
+                background: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.85)), url('images/hero_background.png') center/cover !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+            
+            .hero h1 {
+                font-size: 40pt !important;
+                background: none !important;
+                -webkit-background-clip: initial !important;
+                -webkit-text-fill-color: #FFF !important;
+                color: #FFF !important;
+            }
+            
+            /* Maintain normal flex/grid alignments */
+            .problem-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 20px !important;
+            }
+            
+            .problem-images {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px !important;
+            }
+            
+            .problem-images img {
+                height: auto !important;
+                max-height: 200px !important;
+                object-fit: cover !important;
+            }
+            
+            .card-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 15px !important;
+            }
+            
+            .card {
+                background: #112240 !important;
+                border: 1px solid rgba(212, 175, 55, 0.3) !important;
+                color: #F8F9FA !important;
+                padding: 20px !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            
+            .card-icon {
+                color: var(--accent) !important;
+            }
+            
+            .card h3 {
+                color: #FFF !important;
+            }
+            
+            .card p {
+                color: #BBB !important;
+            }
+            
+            /* Dept Cards styling */
+            .dept-card {
+                background: #112240 !important;
+                border: 1px solid rgba(255,255,255,0.1) !important;
+                color: #F8F9FA !important;
+                display: flex !important;
+                flex-direction: row !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            
+            .dept-icon {
+                background: #0A192F !important;
+                color: var(--accent) !important;
+                width: 100px !important;
+                height: auto !important;
+            }
+            
+            .dept-content h3 {
+                color: #FFF !important;
+            }
+            
+            .tag {
+                background: #0A192F !important;
+                color: #FFF !important;
+                border-color: rgba(255,255,255,0.1) !important;
+            }
+            
+            .svg-diagram {
+                background: #112240 !important;
+                border: 1px solid rgba(255,255,255,0.1) !important;
+            }
+            
+            /* Timeline natural flow */
+            .timeline::after {
+                left: 20px !important;
+            }
+            
+            .timeline-item {
+                width: 100% !important;
+                padding-left: 50px !important;
+                padding-right: 0 !important;
+                left: 0 !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            
+            .timeline-item::after {
+                left: 10px !important;
+            }
+            
+            .timeline-content {
+                background: #112240 !important;
+                border: 1px solid rgba(255,255,255,0.1) !important;
+                color: #F8F9FA !important;
+            }
+            
+            .right .timeline-content {
+                border-right: none !important;
+                border-left: 4px solid var(--primary) !important;
+            }
+            
+            /* Feasibility Table natural print */
+            .premium-table {
+                background: #112240 !important;
+                border: 1px solid rgba(255,255,255,0.1) !important;
+            }
+            
+            .premium-table th {
+                background: #0A192F !important;
+                color: #FFF !important;
+            }
+            
+            .premium-table td {
+                color: #BBB !important;
+                border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+            }
+            
+            /* Team Integration */
+            .integration-wrapper {
+                height: auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 20px !important;
+                align-items: center !important;
+            }
+            
+            .integration-node {
+                position: static !important;
+                transform: none !important;
+                width: 80% !important;
+                background: #112240 !important;
+                color: #FFF !important;
+                border: 1px solid var(--accent) !important;
+            }
+            
+            .robot-center {
+                margin: 20px 0 !important;
+            }
+            
+            .conclusion {
+                height: auto !important;
+                padding: 80px 20px !important;
+                background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+            }
+            
+            .conclusion h2 {
+                font-size: 30pt !important;
+                color: var(--accent) !important;
             }
         }
 
@@ -682,7 +864,6 @@
             <p>Autonomous AI-Powered Robot for Nuclear Inspection and Radiation Monitoring</p>
             <div class="hero-btns">
                 <a href="#problem" class="btn btn-primary">View Project</a>
-                <button onclick="window.print()" class="btn btn-outline"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
             </div>
         </div>
     </section>
