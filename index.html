@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoreSentinel - Robo Active</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary: #0A192F;
+            --secondary: #112240;
+            --accent: #D4AF37;
+            --text-light: #F8F9FA;
+            --text-dark: #2B3A55;
+            --bg-white: #FFFFFF;
+            --bg-light: #F4F6F8;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Typography */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .lead-text {
+            font-size: 1.2rem;
+            color: #555;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Layout & Utilities */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .bg-light { background-color: var(--bg-light); }
+        .bg-dark { background-color: var(--primary); color: var(--text-light); }
+        .bg-dark .section-title { color: var(--text-light); }
+        .bg-dark .lead-text { color: #BBB; }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #F0C84A;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--text-light);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--text-light);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 0;
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            padding: 1rem 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.85)), url('images/hero_background.png') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-light);
+            padding-top: 80px;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #FFF, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInDown 1s ease-out;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        /* Problem Statement */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .problem-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+
+        .problem-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .problem-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .problem-images img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Cards Generic */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-white);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border-top: 4px solid var(--accent);
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .bg-dark .card {
+            background: var(--secondary);
+            border-top-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .bg-dark .card-icon {
+            color: var(--accent);
+        }
+        
+        .bg-dark .card h3 {
+            color: var(--text-light);
+        }
+        
+        .bg-dark .card p {
+            color: #BBB;
+        }
+
+        /* Architecture & SVGs */
+        .svg-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .svg-diagram {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            background: white;
+            padding: 2rem;
+        }
+
+        /* Departments */
+        .dept-card {
+            display: flex;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .dept-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .dept-icon {
+            background: var(--primary);
+            color: var(--accent);
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            flex-shrink: 0;
+        }
+
+        .dept-content {
+            padding: 2rem;
+            flex-grow: 1;
+        }
+
+        .dept-content h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .dept-content h3 span {
+            font-size: 0.8rem;
+            background: var(--bg-light);
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: #555;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .dept-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #E0E0E0;
+        }
+
+        /* Integration Section */
+        .integration-wrapper {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .robot-center {
+            width: 200px;
+            height: 200px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            z-index: 10;
+            box-shadow: 0 0 0 15px rgba(10, 25, 47, 0.1);
+            position: relative;
+        }
+        
+        .robot-center i {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+
+        .integration-node {
+            position: absolute;
+            width: 180px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            font-weight: 600;
+            border-bottom: 3px solid var(--accent);
+            z-index: 10;
+        }
+
+        .node-1 { top: 0; left: 50%; transform: translateX(-50%); }
+        .node-2 { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .node-3 { left: 0; top: 50%; transform: translateY(-50%); }
+        .node-4 { right: 0; top: 50%; transform: translateY(-50%); }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--accent);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: white;
+            border: 4px solid var(--accent);
+            top: 25px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .left { left: 0; }
+        .right { left: 50%; }
+
+        .right::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .right .timeline-content {
+            border-left: none;
+            border-right: 4px solid var(--primary);
+        }
+
+        .timeline-content h3 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-date {
+            color: var(--accent);
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Feasibility Table */
+        .table-responsive {
+            overflow-x: auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        
+        .premium-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        
+        .premium-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .premium-table td {
+            padding: 1.5rem;
+            border-bottom: 1px solid #EEE;
+            color: #555;
+        }
+        
+        .premium-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .premium-table tr:hover td {
+            background-color: var(--bg-light);
+        }
+
+        /* Conclusion */
+        .conclusion {
+            text-align: center;
+            padding: 8rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .conclusion h2 {
+            font-size: 3.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.2;
+            color: var(--accent);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #050C17;
+            color: #8892B0;
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-content h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Print Media Queries */
+        @media print {
+            body { background: white; color: black; font-size: 12pt; }
+            .navbar, .btn, .hero-btns { display: none !important; }
+            .hero { height: auto; background: none; color: black; padding: 50px 0; }
+            .hero h1 { -webkit-text-fill-color: black; font-size: 36pt; }
+            .section { padding: 30px 0; page-break-inside: avoid; }
+            .section-break { page-break-before: always; }
+            .bg-dark { background: white !important; color: black !important; }
+            .bg-dark .section-title, .bg-dark .lead-text { color: black !important; }
+            .card, .dept-card, .timeline-content { box-shadow: none; border: 1px solid #DDD; }
+            .timeline::after { left: 0; }
+            .timeline-item { width: 100%; padding-left: 30px; }
+            .timeline-item.right { left: 0; }
+            .timeline-item::after { left: -10px; }
+            .integration-wrapper { height: auto; display: block; text-align: center; }
+            .integration-node { position: static; transform: none; margin: 20px auto; width: 80%; }
+            .conclusion { background: white; color: black; padding: 50px 0; }
+            .conclusion h2 { color: black; font-size: 24pt; }
+            .svg-diagram { padding: 0; box-shadow: none; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            
+            /* Page Numbers */
+            @page {
+                size: A4;
+                margin: 2cm;
+                @bottom-center {
+                    content: "Page " counter(page);
+                }
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 4rem; }
+            .problem-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-item.right { left: 0; }
+            .left::after, .right::after { left: 21px; }
+            .integration-wrapper { height: auto; flex-direction: column; gap: 2rem; padding: 3rem 0; }
+            .integration-node { position: static; transform: none; width: 100%; }
+            .robot-center { margin: 2rem 0; }
+            .integration-lines { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 3rem; }
+            .section-title { font-size: 2rem; }
+            .dept-card { flex-direction: column; }
+            .dept-icon { width: 100%; height: 100px; }
+            .problem-images { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-content">
+            <div class="logo" style="display: flex; align-items: center; gap: 12px;">
+                <img src="images/Logo.jpeg" alt="Robo Active Logo" style="height: 45px; border-radius: 6px; border: 1px solid rgba(212, 175, 55, 0.3);">
+                <span style="font-weight: 800; font-family: 'Poppins', sans-serif; letter-spacing: 1px; display: flex; gap: 6px;">
+                    <span style="color: #E0E0E0; text-shadow: 0px 0px 10px rgba(255,255,255,0.1);">ROBO</span>
+                    <span style="color: var(--accent); text-shadow: 0px 0px 10px rgba(212, 175, 55, 0.2);">ACTIVE</span>
+                </span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#team">Team</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>CoreSentinel</h1>
+            <p>Autonomous AI-Powered Robot for Nuclear Inspection and Radiation Monitoring</p>
+            <div class="hero-btns">
+                <a href="#problem" class="btn btn-primary">View Project</a>
+                <button onclick="window.print()" class="btn btn-outline"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Statement -->
+    <section id="problem" class="section section-break">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">The Challenge in Nuclear Facilities</h2>
+            <div class="problem-grid">
+                <div class="problem-text" data-aos="fade-right">
+                    <p>Nuclear facilities contain complex networks of pipes, valves, and critical equipment that are continuously exposed to harsh conditions, leading to corrosion, cracks, and potential radiation leaks.</p>
+                    <p>Traditional manual inspection is incredibly dangerous, costly, and inefficient. It places human lives at risk and requires extensive safety protocols.</p>
+                    <p>According to the <strong>ALARA (As Low As Reasonably Achievable)</strong> principles, human exposure to radiation must be minimized at all costs. An autonomous solution is not just an upgrade; it is a necessity.</p>
+                </div>
+                <div class="problem-images" data-aos="fade-left">
+                    <img src="images/nuclear_plant.png" alt="Nuclear Power Plant">
+                    <img src="images/corroded_pipes.png" alt="Corroded Pipes">
+                    <img src="images/radiation_sign.png" alt="Radiation Symbol">
+                    <img src="images/industrial_facility.png" alt="Industrial Facility">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Objectives -->
+    <section class="section bg-light">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Project Objectives</h2>
+            <div class="card-grid">
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fa-solid fa-person-rays card-icon"></i>
+                    <h3>Reduce Exposure</h3>
+                    <p>Minimize human exposure to hazardous radiation zones strictly adhering to ALARA principles.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-magnifying-glass-chart card-icon"></i>
+                    <h3>Detect Defects</h3>
+                    <p>Automatically detect microscopic cracks and corrosion on critical infrastructure using advanced AI.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fa-solid fa-temperature-half card-icon"></i>
+                    <h3>Environmental Monitoring</h3>
+                    <p>Continuously monitor radiation levels, thermal anomalies, and dangerous gas leaks.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fa-solid fa-bell card-icon"></i>
+                    <h3>Real-time Alerts</h3>
+                    <p>Generate instantaneous alerts and comprehensive reports to the centralized dashboard.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="500">
+                    <i class="fa-solid fa-shield-heart card-icon"></i>
+                    <h3>Enhance Safety</h3>
+                    <p>Improve overall facility safety, reduce downtime, and significantly lower maintenance costs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proposed Solution & Architecture -->
+    <section id="solution" class="section section-break bg-dark">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Proposed Solution</h2>
+            <p class="lead-text" data-aos="fade-up">CoreSentinel is an advanced autonomous robotic system built on ROS, integrating state-of-the-art AI for computer vision with a suite of precise environmental sensors.</p>
+            
+            <div id="architecture" class="svg-container" data-aos="zoom-in" style="margin-top: 4rem;">
+                <!-- Layered Architecture SVG embedded -->
+                <svg class="svg-diagram" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#0A192F;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#112240;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="gradAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#F0C84A;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                            <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000" flood-opacity="0.2"/>
+                        </filter>
+                    </defs>
+                    
+                    <!-- Layer 4: Dashboard -->
+                    <rect x="150" y="40" width="500" height="60" rx="10" fill="url(#gradAccent)" filter="url(#shadow)"/>
+                    <text x="400" y="75" font-family="Poppins" font-weight="bold" font-size="20" fill="#0A192F" text-anchor="middle">Central Control Dashboard</text>
+                    
+                    <!-- Connection -->
+                    <path d="M400 100 L400 140" stroke="#D4AF37" stroke-width="3" stroke-dasharray="5,5"/>
+                    <polygon points="395,135 405,135 400,145" fill="#D4AF37"/>
+                    
+                    <!-- Layer 3: AI & ROS -->
+                    <rect x="100" y="140" width="600" height="60" rx="10" fill="url(#grad1)" filter="url(#shadow)"/>
+                    <text x="400" y="175" font-family="Poppins" font-weight="bold" font-size="20" fill="white" text-anchor="middle">ROS Middleware & AI Inference (YOLOv8)</text>
+                    
+                    <!-- Connection -->
+                    <path d="M250 200 L250 240" stroke="#A0A0A0" stroke-width="3" />
+                    <path d="M400 200 L400 240" stroke="#A0A0A0" stroke-width="3" />
+                    <path d="M550 200 L550 240" stroke="#A0A0A0" stroke-width="3" />
+                    
+                    <!-- Layer 2: Perception & Nav -->
+                    <rect x="150" y="240" width="180" height="50" rx="8" fill="#F4F6F8" stroke="#112240" stroke-width="2"/>
+                    <text x="240" y="270" font-family="Inter" font-weight="bold" font-size="14" fill="#0A192F" text-anchor="middle">SLAM & Navigation</text>
+                    
+                    <rect x="350" y="240" width="100" height="50" rx="8" fill="#F4F6F8" stroke="#112240" stroke-width="2"/>
+                    <text x="400" y="270" font-family="Inter" font-weight="bold" font-size="14" fill="#0A192F" text-anchor="middle">Motor Ctrl</text>
+                    
+                    <rect x="470" y="240" width="180" height="50" rx="8" fill="#F4F6F8" stroke="#112240" stroke-width="2"/>
+                    <text x="560" y="270" font-family="Inter" font-weight="bold" font-size="14" fill="#0A192F" text-anchor="middle">Sensor Fusion</text>
+                    
+                    <!-- Connection -->
+                    <path d="M240 290 L240 330" stroke="#A0A0A0" stroke-width="3" />
+                    <path d="M400 290 L400 330" stroke="#A0A0A0" stroke-width="3" />
+                    <path d="M560 290 L560 330" stroke="#A0A0A0" stroke-width="3" />
+                    
+                    <!-- Layer 1: Hardware -->
+                    <rect x="50" y="330" width="700" height="50" rx="8" fill="#2B3A55" filter="url(#shadow)"/>
+                    <text x="400" y="360" font-family="Inter" font-weight="bold" font-size="16" fill="white" text-anchor="middle">Hardware Layer: Cameras | Geiger Counters | Gas Sensors | LiDAR</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Department Responsibilities -->
+    <section class="section section-break bg-light">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Department Responsibilities</h2>
+            <p class="lead-text" data-aos="fade-up">A multidisciplinary approach ensuring comprehensive engineering excellence.</p>
+
+            <div class="dept-card" data-aos="fade-up">
+                <div class="dept-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                <div class="dept-content">
+                    <h3>Computer & Systems Engineering <span>2 Members</span></h3>
+                    <div class="dept-tags">
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag">Computer Vision</span>
+                        <span class="tag">YOLO</span>
+                        <span class="tag">OpenCV</span>
+                        <span class="tag">ROS</span>
+                        <span class="tag">SLAM</span>
+                        <span class="tag">Path Planning</span>
+                        <span class="tag">Dashboard</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dept-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="dept-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                <div class="dept-content">
+                    <h3>Biomedical Engineering <span>3 Members</span></h3>
+                    <div class="dept-tags">
+                        <span class="tag">Radiation Sensors</span>
+                        <span class="tag">Temperature Sensors</span>
+                        <span class="tag">Gas Sensors</span>
+                        <span class="tag">Signal Processing</span>
+                        <span class="tag">Sensor Fusion</span>
+                        <span class="tag">Calibration</span>
+                        <span class="tag">Safety Thresholds</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dept-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="dept-icon"><i class="fa-solid fa-atom"></i></div>
+                <div class="dept-content">
+                    <h3>Nuclear Engineering <span>2 Members</span></h3>
+                    <div class="dept-tags">
+                        <span class="tag">Problem Definition</span>
+                        <span class="tag">Radiation Protection</span>
+                        <span class="tag">ALARA Principle</span>
+                        <span class="tag">IAEA Standards</span>
+                        <span class="tag">Safety Analysis</span>
+                        <span class="tag">Operational Scenarios</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dept-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="dept-icon"><i class="fa-solid fa-gears"></i></div>
+                <div class="dept-content">
+                    <h3>Production Engineering <span>1 Member</span></h3>
+                    <div class="dept-tags">
+                        <span class="tag">Mechanical Design</span>
+                        <span class="tag">CAD Modeling</span>
+                        <span class="tag">Material Selection</span>
+                        <span class="tag">Manufacturing Plan</span>
+                        <span class="tag">Bill of Materials</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Integration (Animated) -->
+    <section id="team" class="section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Team Integration</h2>
+            <div class="integration-wrapper" data-aos="zoom-in">
+                <!-- SVG lines behind elements -->
+                <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;" class="integration-lines">
+                    <line x1="50%" y1="15%" x2="50%" y2="50%" stroke="#D4AF37" stroke-width="2" stroke-dasharray="5,5">
+                        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="2s" repeatCount="indefinite" />
+                    </line>
+                    <line x1="50%" y1="85%" x2="50%" y2="50%" stroke="#D4AF37" stroke-width="2" stroke-dasharray="5,5">
+                        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="2s" repeatCount="indefinite" />
+                    </line>
+                    <line x1="20%" y1="50%" x2="50%" y2="50%" stroke="#D4AF37" stroke-width="2" stroke-dasharray="5,5">
+                        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="2s" repeatCount="indefinite" />
+                    </line>
+                    <line x1="80%" y1="50%" x2="50%" y2="50%" stroke="#D4AF37" stroke-width="2" stroke-dasharray="5,5">
+                        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="2s" repeatCount="indefinite" />
+                    </line>
+                </svg>
+
+                <div class="integration-node node-1">Computer & Systems<br><small>Intelligence & Logic</small></div>
+                <div class="integration-node node-2">Production<br><small>Physical Structure</small></div>
+                <div class="integration-node node-3">Biomedical<br><small>Sensing & Life Safety</small></div>
+                <div class="integration-node node-4">Nuclear<br><small>Domain Expertise</small></div>
+                
+                <div class="robot-center">
+                    <i class="fa-solid fa-robot"></i>
+                    <strong>CoreSentinel</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mechanical Design & Sensors -->
+    <section class="section section-break bg-dark">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Mechanical & Sensor Design</h2>
+            <div class="problem-grid" style="margin-bottom: 4rem;">
+                <div data-aos="fade-right">
+                    <img src="images/robot_cad.png" alt="CAD Design" style="width: 100%; border-radius: 15px;">
+                </div>
+                <div data-aos="fade-left">
+                    <h3 style="font-size: 2rem; color: var(--accent); margin-bottom: 1rem;">Robust Chassis Architecture</h3>
+                    <p style="color: #BBB; margin-bottom: 1rem;">Designed using industrial-grade CAD modeling, the CoreSentinel features a radiation-hardened chassis, all-terrain track wheels, and stabilized sensor mounts.</p>
+                    <ul style="color: #BBB; list-style-position: inside; line-height: 2;">
+                        <li><i class="fa-solid fa-check" style="color: var(--accent); margin-right: 10px;"></i> Lead-lined protective enclosure for electronics</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--accent); margin-right: 10px;"></i> Omni-directional mobility system</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--accent); margin-right: 10px;"></i> Modular payload bays for quick sensor swapping</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="text-align: center; color: white; margin-bottom: 2rem; font-size: 2rem;">Instrumentation Suite</h3>
+            <div class="card-grid">
+                <div class="card" data-aos="fade-up">
+                    <i class="fa-solid fa-wave-square card-icon"></i>
+                    <h3>Geiger-Müller Counter</h3>
+                    <p>High-sensitivity radiation detection for Alpha, Beta, and Gamma rays.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fa-solid fa-fire card-icon"></i>
+                    <h3>Thermal Imaging</h3>
+                    <p>Detects overheated valves and abnormal pipe temperatures instantly.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-smog card-icon"></i>
+                    <h3>Gas Sensors (MQ)</h3>
+                    <p>Monitors hazardous gas leaks in the environment (Hydrogen, Methane).</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fa-solid fa-camera card-icon"></i>
+                    <h3>High-Res Vision</h3>
+                    <p>4K Camera system for optical defect detection and teleoperation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI & Safety -->
+    <section class="section section-break bg-light">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Artificial Intelligence & Safety Compliance</h2>
+            
+            <div class="problem-grid">
+                <div data-aos="fade-right">
+                    <h3 style="font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem;"><i class="fa-solid fa-brain" style="color: var(--accent);"></i> Deep Learning Vision</h3>
+                    <p>Utilizing optimized Convolutional Neural Networks (YOLOv8 architecture), CoreSentinel processes video feeds in real-time on edge hardware.</p>
+                    <ul style="margin-top: 1rem; color: #555; padding-left: 20px;">
+                        <li>Micro-crack detection on metallic surfaces.</li>
+                        <li>Rust and corrosion instance segmentation.</li>
+                        <li>Structural anomaly recognition.</li>
+                    </ul>
+                </div>
+                <div data-aos="fade-left">
+                    <h3 style="font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem;"><i class="fa-solid fa-clipboard-check" style="color: var(--accent);"></i> Regulatory Compliance</h3>
+                    <p>Designed strictly under the guidance of Nuclear Engineering principles to ensure legal and physical compliance.</p>
+                    <ul style="margin-top: 1rem; color: #555; padding-left: 20px;">
+                        <li><strong>ALARA Principle:</strong> Completely removes human workers from high-dose zones.</li>
+                        <li><strong>IAEA Standards:</strong> Adheres to International Atomic Energy Agency remote inspection guidelines.</li>
+                        <li>Fail-safe emergency retrieval protocols.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Development Timeline -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">7-Day Development Timeline</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item left" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Day 1</span>
+                        <h3>Problem Definition</h3>
+                        <p>Defining the scope, ALARA integration, and system requirements.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right" data-aos="fade-left">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Day 2</span>
+                        <h3>Research & Architecture</h3>
+                        <p>Selecting sensors, AI models, and designing ROS node topology.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Day 3</span>
+                        <h3>Prototyping</h3>
+                        <p>CAD modeling and software simulation in Gazebo.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right" data-aos="fade-left">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Day 4</span>
+                        <h3>Safety & Feasibility</h3>
+                        <p>Cost estimation, risk assessment, and IAEA compliance check.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Day 5</span>
+                        <h3>Presentation Prep</h3>
+                        <p>Creating pitch deck, UI dashboards, and visual assets.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right" data-aos="fade-left">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Day 6</span>
+                        <h3>Rehearsal</h3>
+                        <p>Cross-department integration testing and pitch practice.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Day 7</span>
+                        <h3>Final Review</h3>
+                        <p>Final polishing and Global Hackatom Egypt 2026 delivery.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feasibility Study & Why We Can Win -->
+    <section class="section section-break bg-light">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Feasibility & Competitive Advantage</h2>
+            
+            <div class="table-responsive" data-aos="fade-up" style="margin-bottom: 4rem;">
+                <table class="premium-table">
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Traditional Method</th>
+                            <th>CoreSentinel Solution</th>
+                            <th>Impact / ROI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Human Exposure</strong></td>
+                            <td>High (requires suits, badges, time limits)</td>
+                            <td>Zero (Autonomous remote operation)</td>
+                            <td><span style="color: #27ae60; font-weight: bold;">Infinite Value (Lives saved)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Inspection Time</strong></td>
+                            <td>Weeks (Prep, execution, decontamination)</td>
+                            <td>Continuous (24/7 Monitoring)</td>
+                            <td><span style="color: #27ae60; font-weight: bold;">90% Time Reduction</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Defect Detection</strong></td>
+                            <td>Subjective human visual inspection</td>
+                            <td>Objective AI-driven micrometer precision</td>
+                            <td><span style="color: #27ae60; font-weight: bold;">High Accuracy & Consistency</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cost per Inspection</strong></td>
+                            <td>Extremely High (Labor, insurance, downtime)</td>
+                            <td>Low (Initial CAPEX + minimal maintenance)</td>
+                            <td><span style="color: #27ae60; font-weight: bold;">Estimated 3-Month Payback</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-grid">
+                <div class="card" style="background: var(--primary); color: white;" data-aos="zoom-in">
+                    <h3 style="color: var(--accent); font-size: 1.8rem; margin-bottom: 1rem;">Why We Will Win</h3>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> <strong>True Interdisciplinary Team:</strong> Bridging 4 distinct engineering domains.</li>
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> <strong>High Feasibility:</strong> Using existing ROS/YOLO stacks applied to a niche, high-value problem.</li>
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> <strong>Massive Societal Impact:</strong> Direct alignment with global clean energy safety goals.</li>
+                        <li><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> <strong>Ready for Incubation:</strong> Clear path from prototype to industrial manufacturing.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="section-break conclusion">
+        <div class="container" data-aos="zoom-in">
+            <h2>Protecting the Heart of Nuclear Energy with AI and Robotics.</h2>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <img src="images/Logo.jpeg" alt="Robo Active Logo" style="height: 60px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                <h3>Robo Active</h3>
+            </div>
+            <p><strong>Project:</strong> CoreSentinel</p>
+            <p><strong>Event:</strong> Global Hackatom Egypt 2026</p>
+            <div style="margin-top: 20px; color: #555; font-size: 0.9rem;">
+                <p>&copy; 2026 Robo Active Team. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth Scrolling for Nav Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
