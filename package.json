@@ -1,0 +1,16 @@
+{
+  "name": "robo-active",
+  "version": "1.0.0",
+  "description": "CoreSentinel - Robo Active website",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build required'",
+    "lint": "echo 'No linter configured for static HTML'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/analytics": "^1.1.1"
+  }
+}
