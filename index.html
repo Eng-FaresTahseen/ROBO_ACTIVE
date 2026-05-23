@@ -3,1332 +3,773 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoreSentinel - Robo Active</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    <style>
-        /* CSS Variables */
-        :root {
-            --primary: #0A192F;
-            --secondary: #112240;
-            --accent: #D4AF37;
-            --text-light: #F8F9FA;
-            --text-dark: #2B3A55;
-            --bg-white: #FFFFFF;
-            --bg-light: #F4F6F8;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        /* Reset & Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text-dark);
-            background-color: var(--bg-white);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        /* Typography */
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-
-        .lead-text {
-            font-size: 1.2rem;
-            color: #555;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 3rem;
-        }
-
-        /* Layout & Utilities */
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section {
-            padding: 6rem 0;
-            position: relative;
-        }
-
-        .bg-light { background-color: var(--bg-light); }
-        .bg-dark { background-color: var(--primary); color: var(--text-light); }
-        .bg-dark .section-title { color: var(--text-light); }
-        .bg-dark .lead-text { color: #BBB; }
-
-        .btn {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
-            cursor: pointer;
-            border: none;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-primary {
-            background-color: var(--accent);
-            color: var(--primary);
-        }
-
-        .btn-primary:hover {
-            background-color: #F0C84A;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: var(--text-light);
-            border: 2px solid var(--text-light);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--text-light);
-            color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        /* Navbar */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 0;
-            background: rgba(10, 25, 47, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            transition: var(--transition);
-        }
-
-        .navbar.scrolled {
-            padding: 1rem 0;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo span { color: var(--accent); }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.85)), url('images/hero_background.png') center/cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--text-light);
-            padding-top: 80px;
-        }
-
-        .hero h1 {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #FFF, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeInDown 1s ease-out;
-            line-height: 1.1;
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            max-width: 800px;
-            margin: 0 auto 3rem;
-            font-weight: 300;
-            animation: fadeInUp 1s ease-out 0.3s both;
-        }
-
-        .hero-btns {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            animation: fadeInUp 1s ease-out 0.6s both;
-        }
-
-        /* Problem Statement */
-        .problem-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .problem-text p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            color: #555;
-        }
-
-        .problem-images {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .problem-images img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: var(--transition);
-        }
-
-        .problem-images img:hover {
-            transform: scale(1.05);
-        }
-
-        /* Cards Generic */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--bg-white);
-            padding: 2.5rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: var(--transition);
-            border-top: 4px solid var(--accent);
-            height: 100%;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .card p {
-            color: #666;
-            font-size: 0.95rem;
-        }
-        
-        .bg-dark .card {
-            background: var(--secondary);
-            border-top-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .bg-dark .card-icon {
-            color: var(--accent);
-        }
-        
-        .bg-dark .card h3 {
-            color: var(--text-light);
-        }
-        
-        .bg-dark .card p {
-            color: #BBB;
-        }
-
-        /* Architecture & SVGs */
-        .svg-container {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            display: block;
-        }
-        
-        .svg-diagram {
-            width: 100%;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-            background: white;
-            padding: 2rem;
-        }
-
-        /* Departments */
-        .dept-card {
-            display: flex;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            transition: var(--transition);
-        }
-
-        .dept-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-        }
-
-        .dept-icon {
-            background: var(--primary);
-            color: var(--accent);
-            width: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            flex-shrink: 0;
-        }
-
-        .dept-content {
-            padding: 2rem;
-            flex-grow: 1;
-        }
-
-        .dept-content h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .dept-content h3 span {
-            font-size: 0.8rem;
-            background: var(--bg-light);
-            padding: 5px 15px;
-            border-radius: 20px;
-            color: #555;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-        }
-
-        .dept-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .tag {
-            background: var(--bg-light);
-            color: var(--text-dark);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border: 1px solid #E0E0E0;
-        }
-
-        /* Integration Section */
-        .integration-wrapper {
-            position: relative;
-            height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 3rem;
-        }
-
-        .robot-center {
-            width: 200px;
-            height: 200px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent);
-            z-index: 10;
-            box-shadow: 0 0 0 15px rgba(10, 25, 47, 0.1);
-            position: relative;
-        }
-        
-        .robot-center i {
-            font-size: 4rem;
-            margin-bottom: 10px;
-        }
-
-        .integration-node {
-            position: absolute;
-            width: 180px;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            text-align: center;
-            font-weight: 600;
-            border-bottom: 3px solid var(--accent);
-            z-index: 10;
-        }
-
-        .node-1 { top: 0; left: 50%; transform: translateX(-50%); }
-        .node-2 { bottom: 0; left: 50%; transform: translateX(-50%); }
-        .node-3 { left: 0; top: 50%; transform: translateY(-50%); }
-        .node-4 { right: 0; top: 50%; transform: translateY(-50%); }
-
-        /* Timeline */
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            background-color: var(--accent);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -2px;
-            border-radius: 2px;
-        }
-
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            background-color: inherit;
-            width: 50%;
-        }
-
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            right: -10px;
-            background-color: white;
-            border: 4px solid var(--accent);
-            top: 25px;
-            border-radius: 50%;
-            z-index: 1;
-        }
-
-        .left { left: 0; }
-        .right { left: 50%; }
-
-        .right::after {
-            left: -10px;
-        }
-
-        .timeline-content {
-            padding: 20px 30px;
-            background-color: white;
-            position: relative;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--primary);
-        }
-        
-        .right .timeline-content {
-            border-left: none;
-            border-right: 4px solid var(--primary);
-        }
-
-        .timeline-content h3 {
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        
-        .timeline-date {
-            color: var(--accent);
-            font-weight: 800;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        /* Feasibility Table */
-        .table-responsive {
-            overflow-x: auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        
-        .premium-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-        
-        .premium-table th {
-            background: var(--primary);
-            color: white;
-            padding: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        
-        .premium-table td {
-            padding: 1.5rem;
-            border-bottom: 1px solid #EEE;
-            color: #555;
-        }
-        
-        .premium-table tr:last-child td {
-            border-bottom: none;
-        }
-        
-        .premium-table tr:hover td {
-            background-color: var(--bg-light);
-        }
-
-        /* Conclusion */
-        .conclusion {
-            text-align: center;
-            padding: 8rem 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .conclusion h2 {
-            font-size: 3.5rem;
-            max-width: 1000px;
-            margin: 0 auto;
-            line-height: 1.2;
-            color: var(--accent);
-        }
-
-        /* Footer */
-        .footer {
-            background-color: #050C17;
-            color: #8892B0;
-            text-align: center;
-            padding: 3rem 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .footer-content h3 {
-            color: white;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-content p {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Animations */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Print Media Queries (Natural Website Layout) */
-        @media print {
-            /* General Print Rules */
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                color-adjust: exact !important;
-                box-shadow: none !important;
-                text-shadow: none !important;
-            }
-            
-            @page {
-                size: A4 portrait;
-                margin: 10mm;
-            }
-            
-            body {
-                background-color: #0A192F !important;
-                color: #F8F9FA !important;
-                font-size: 11pt;
-                line-height: 1.5;
-            }
-            
-            .navbar, .btn, .hero-btns, .integration-lines {
-                display: none !important;
-            }
-            
-            /* Remove forced heights and let layout flow naturally */
-            .section {
-                padding: 40px 0 !important;
-                min-height: auto !important;
-                height: auto !important;
-                display: block !important;
-                page-break-inside: auto !important;
-                break-inside: auto !important;
-            }
-            
-            .hero {
-                height: auto !important;
-                min-height: 600px !important;
-                padding: 100px 20px !important;
-                background: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.85)), url('images/hero_background.png') center/cover !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: center !important;
-                align-items: center !important;
-            }
-            
-            .hero h1 {
-                font-size: 40pt !important;
-                background: none !important;
-                -webkit-background-clip: initial !important;
-                -webkit-text-fill-color: #FFF !important;
-                color: #FFF !important;
-            }
-            
-            /* Maintain normal flex/grid alignments */
-            .problem-grid {
-                display: grid !important;
-                grid-template-columns: 1fr 1fr !important;
-                gap: 20px !important;
-            }
-            
-            .problem-images {
-                display: grid !important;
-                grid-template-columns: 1fr 1fr !important;
-                gap: 10px !important;
-            }
-            
-            .problem-images img {
-                height: auto !important;
-                max-height: 200px !important;
-                object-fit: cover !important;
-            }
-            
-            .card-grid {
-                display: grid !important;
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 15px !important;
-            }
-            
-            .card {
-                background: #112240 !important;
-                border: 1px solid rgba(212, 175, 55, 0.3) !important;
-                color: #F8F9FA !important;
-                padding: 20px !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-            
-            .card-icon {
-                color: var(--accent) !important;
-            }
-            
-            .card h3 {
-                color: #FFF !important;
-            }
-            
-            .card p {
-                color: #BBB !important;
-            }
-            
-            /* Dept Cards styling */
-            .dept-card {
-                background: #112240 !important;
-                border: 1px solid rgba(255,255,255,0.1) !important;
-                color: #F8F9FA !important;
-                display: flex !important;
-                flex-direction: row !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-            
-            .dept-icon {
-                background: #0A192F !important;
-                color: var(--accent) !important;
-                width: 100px !important;
-                height: auto !important;
-            }
-            
-            .dept-content h3 {
-                color: #FFF !important;
-            }
-            
-            .tag {
-                background: #0A192F !important;
-                color: #FFF !important;
-                border-color: rgba(255,255,255,0.1) !important;
-            }
-            
-            .svg-diagram {
-                background: #112240 !important;
-                border: 1px solid rgba(255,255,255,0.1) !important;
-            }
-            
-            /* Timeline natural flow */
-            .timeline::after {
-                left: 20px !important;
-            }
-            
-            .timeline-item {
-                width: 100% !important;
-                padding-left: 50px !important;
-                padding-right: 0 !important;
-                left: 0 !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-            
-            .timeline-item::after {
-                left: 10px !important;
-            }
-            
-            .timeline-content {
-                background: #112240 !important;
-                border: 1px solid rgba(255,255,255,0.1) !important;
-                color: #F8F9FA !important;
-            }
-            
-            .right .timeline-content {
-                border-right: none !important;
-                border-left: 4px solid var(--primary) !important;
-            }
-            
-            /* Feasibility Table natural print */
-            .premium-table {
-                background: #112240 !important;
-                border: 1px solid rgba(255,255,255,0.1) !important;
-            }
-            
-            .premium-table th {
-                background: #0A192F !important;
-                color: #FFF !important;
-            }
-            
-            .premium-table td {
-                color: #BBB !important;
-                border-bottom: 1px solid rgba(255,255,255,0.1) !important;
-            }
-            
-            /* Team Integration */
-            .integration-wrapper {
-                height: auto !important;
-                display: flex !important;
-                flex-direction: column !important;
-                gap: 20px !important;
-                align-items: center !important;
-            }
-            
-            .integration-node {
-                position: static !important;
-                transform: none !important;
-                width: 80% !important;
-                background: #112240 !important;
-                color: #FFF !important;
-                border: 1px solid var(--accent) !important;
-            }
-            
-            .robot-center {
-                margin: 20px 0 !important;
-            }
-            
-            .conclusion {
-                height: auto !important;
-                padding: 80px 20px !important;
-                background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
-            }
-            
-            .conclusion h2 {
-                font-size: 30pt !important;
-                color: var(--accent) !important;
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero h1 { font-size: 4rem; }
-            .problem-grid { grid-template-columns: 1fr; gap: 2rem; }
-            .timeline::after { left: 31px; }
-            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
-            .timeline-item.right { left: 0; }
-            .left::after, .right::after { left: 21px; }
-            .integration-wrapper { height: auto; flex-direction: column; gap: 2rem; padding: 3rem 0; }
-            .integration-node { position: static; transform: none; width: 100%; }
-            .robot-center { margin: 2rem 0; }
-            .integration-lines { display: none; }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero h1 { font-size: 3rem; }
-            .section-title { font-size: 2rem; }
-            .dept-card { flex-direction: column; }
-            .dept-icon { width: 100%; height: 100px; }
-            .problem-images { grid-template-columns: 1fr; }
-        }
-    </style>
+    <title>Quantum Guardian - Autonomous Nuclear Disaster Response Drone System</title>
+    <meta name="description" content="A futuristic, AI-powered autonomous drone system for real-time nuclear disaster response, radiation mapping, and human evacuation guidance.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo:wght@300;400;600&family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="container nav-content">
-            <div class="logo" style="display: flex; align-items: center; gap: 12px;">
-                <img src="images/Logo.jpeg" alt="Robo Active Logo" style="height: 45px; border-radius: 6px; border: 1px solid rgba(212, 175, 55, 0.3);">
-                <span style="font-weight: 800; font-family: 'Poppins', sans-serif; letter-spacing: 1px; display: flex; gap: 6px;">
-                    <span style="color: #E0E0E0; text-shadow: 0px 0px 10px rgba(255,255,255,0.1);">ROBO</span>
-                    <span style="color: var(--accent); text-shadow: 0px 0px 10px rgba(212, 175, 55, 0.2);">ACTIVE</span>
-                </span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#problem">Problem</a></li>
-                <li><a href="#solution">Solution</a></li>
-                <li><a href="#architecture">Architecture</a></li>
-                <li><a href="#team">Team</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Ambient Radiation Particles Canvas -->
+    <canvas id="bg-particles"></canvas>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <h1>CoreSentinel</h1>
-            <p>Autonomous AI-Powered Robot for Nuclear Inspection and Radiation Monitoring</p>
-            <div class="hero-btns">
-                <a href="#problem" class="btn btn-primary">View Project</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Problem Statement -->
-    <section id="problem" class="section section-break">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">The Challenge in Nuclear Facilities</h2>
-            <div class="problem-grid">
-                <div class="problem-text" data-aos="fade-right">
-                    <p>Nuclear facilities contain complex networks of pipes, valves, and critical equipment that are continuously exposed to harsh conditions, leading to corrosion, cracks, and potential radiation leaks.</p>
-                    <p>Traditional manual inspection is incredibly dangerous, costly, and inefficient. It places human lives at risk and requires extensive safety protocols.</p>
-                    <p>According to the <strong>ALARA (As Low As Reasonably Achievable)</strong> principles, human exposure to radiation must be minimized at all costs. An autonomous solution is not just an upgrade; it is a necessity.</p>
-                </div>
-                <div class="problem-images" data-aos="fade-left">
-                    <img src="images/nuclear_plant.png" alt="Nuclear Power Plant">
-                    <img src="images/corroded_pipes.png" alt="Corroded Pipes">
-                    <img src="images/radiation_sign.png" alt="Radiation Symbol">
-                    <img src="images/industrial_facility.png" alt="Industrial Facility">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Project Objectives -->
-    <section class="section bg-light">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Project Objectives</h2>
-            <div class="card-grid">
-                <div class="card" data-aos="fade-up" data-aos-delay="100">
-                    <i class="fa-solid fa-person-rays card-icon"></i>
-                    <h3>Reduce Exposure</h3>
-                    <p>Minimize human exposure to hazardous radiation zones strictly adhering to ALARA principles.</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="200">
-                    <i class="fa-solid fa-magnifying-glass-chart card-icon"></i>
-                    <h3>Detect Defects</h3>
-                    <p>Automatically detect microscopic cracks and corrosion on critical infrastructure using advanced AI.</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="300">
-                    <i class="fa-solid fa-temperature-half card-icon"></i>
-                    <h3>Environmental Monitoring</h3>
-                    <p>Continuously monitor radiation levels, thermal anomalies, and dangerous gas leaks.</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="400">
-                    <i class="fa-solid fa-bell card-icon"></i>
-                    <h3>Real-time Alerts</h3>
-                    <p>Generate instantaneous alerts and comprehensive reports to the centralized dashboard.</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="500">
-                    <i class="fa-solid fa-shield-heart card-icon"></i>
-                    <h3>Enhance Safety</h3>
-                    <p>Improve overall facility safety, reduce downtime, and significantly lower maintenance costs.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Proposed Solution & Architecture -->
-    <section id="solution" class="section section-break bg-dark">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Proposed Solution</h2>
-            <p class="lead-text" data-aos="fade-up">CoreSentinel is an advanced autonomous robotic system built on ROS, integrating state-of-the-art AI for computer vision with a suite of precise environmental sensors.</p>
-            
-            <div id="architecture" class="svg-container" data-aos="zoom-in" style="margin-top: 4rem;">
-                <!-- Layered Architecture SVG embedded -->
-                <svg class="svg-diagram" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#0A192F;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#112240;stop-opacity:1" />
-                        </linearGradient>
-                        <linearGradient id="gradAccent" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#F0C84A;stop-opacity:1" />
-                        </linearGradient>
-                        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-                            <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000" flood-opacity="0.2"/>
-                        </filter>
-                    </defs>
-                    
-                    <!-- Layer 4: Dashboard -->
-                    <rect x="150" y="40" width="500" height="60" rx="10" fill="url(#gradAccent)" filter="url(#shadow)"/>
-                    <text x="400" y="75" font-family="Poppins" font-weight="bold" font-size="20" fill="#0A192F" text-anchor="middle">Central Control Dashboard</text>
-                    
-                    <!-- Connection -->
-                    <path d="M400 100 L400 140" stroke="#D4AF37" stroke-width="3" stroke-dasharray="5,5"/>
-                    <polygon points="395,135 405,135 400,145" fill="#D4AF37"/>
-                    
-                    <!-- Layer 3: AI & ROS -->
-                    <rect x="100" y="140" width="600" height="60" rx="10" fill="url(#grad1)" filter="url(#shadow)"/>
-                    <text x="400" y="175" font-family="Poppins" font-weight="bold" font-size="20" fill="white" text-anchor="middle">ROS Middleware & AI Inference (YOLOv8)</text>
-                    
-                    <!-- Connection -->
-                    <path d="M250 200 L250 240" stroke="#A0A0A0" stroke-width="3" />
-                    <path d="M400 200 L400 240" stroke="#A0A0A0" stroke-width="3" />
-                    <path d="M550 200 L550 240" stroke="#A0A0A0" stroke-width="3" />
-                    
-                    <!-- Layer 2: Perception & Nav -->
-                    <rect x="150" y="240" width="180" height="50" rx="8" fill="#F4F6F8" stroke="#112240" stroke-width="2"/>
-                    <text x="240" y="270" font-family="Inter" font-weight="bold" font-size="14" fill="#0A192F" text-anchor="middle">SLAM & Navigation</text>
-                    
-                    <rect x="350" y="240" width="100" height="50" rx="8" fill="#F4F6F8" stroke="#112240" stroke-width="2"/>
-                    <text x="400" y="270" font-family="Inter" font-weight="bold" font-size="14" fill="#0A192F" text-anchor="middle">Motor Ctrl</text>
-                    
-                    <rect x="470" y="240" width="180" height="50" rx="8" fill="#F4F6F8" stroke="#112240" stroke-width="2"/>
-                    <text x="560" y="270" font-family="Inter" font-weight="bold" font-size="14" fill="#0A192F" text-anchor="middle">Sensor Fusion</text>
-                    
-                    <!-- Connection -->
-                    <path d="M240 290 L240 330" stroke="#A0A0A0" stroke-width="3" />
-                    <path d="M400 290 L400 330" stroke="#A0A0A0" stroke-width="3" />
-                    <path d="M560 290 L560 330" stroke="#A0A0A0" stroke-width="3" />
-                    
-                    <!-- Layer 1: Hardware -->
-                    <rect x="50" y="330" width="700" height="50" rx="8" fill="#2B3A55" filter="url(#shadow)"/>
-                    <text x="400" y="360" font-family="Inter" font-weight="bold" font-size="16" fill="white" text-anchor="middle">Hardware Layer: Cameras | Geiger Counters | Gas Sensors | LiDAR</text>
+    <!-- Futuristic Loading Screen -->
+    <div id="loader">
+        <div class="loader-content">
+            <div class="loader-scanner"></div>
+            <div class="loader-logo">
+                <svg viewBox="0 0 100 100" class="tech-icon-svg">
+                    <circle cx="50" cy="50" r="45" stroke="#00f5ff" stroke-width="2" fill="none" stroke-dasharray="10 5" />
+                    <polygon points="50,15 80,75 20,75" stroke="#39ff14" stroke-width="2" fill="none" />
+                    <circle cx="50" cy="50" r="10" fill="#39ff14" class="pulse-glow" />
                 </svg>
+                <h2>QUANTUM GUARDIAN</h2>
+                <div class="loader-sub">SECURE CORRIDOR NAVIGATOR // v1.0.8</div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="load-progress"></div>
+            </div>
+            
+            <div class="loader-console" id="loader-console">
+                <div>[SYSTEM] INITIALIZING BOOT SEQUENCE...</div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Department Responsibilities -->
-    <section class="section section-break bg-light">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Department Responsibilities</h2>
-            <p class="lead-text" data-aos="fade-up">A multidisciplinary approach ensuring comprehensive engineering excellence.</p>
-
-            <div class="dept-card" data-aos="fade-up">
-                <div class="dept-icon"><i class="fa-solid fa-laptop-code"></i></div>
-                <div class="dept-content">
-                    <h3>Computer & Systems Engineering <span>2 Members</span></h3>
-                    <div class="dept-tags">
-                        <span class="tag">Machine Learning</span>
-                        <span class="tag">Computer Vision</span>
-                        <span class="tag">YOLO</span>
-                        <span class="tag">OpenCV</span>
-                        <span class="tag">ROS</span>
-                        <span class="tag">SLAM</span>
-                        <span class="tag">Path Planning</span>
-                        <span class="tag">Dashboard</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dept-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="dept-icon"><i class="fa-solid fa-heart-pulse"></i></div>
-                <div class="dept-content">
-                    <h3>Biomedical Engineering <span>3 Members</span></h3>
-                    <div class="dept-tags">
-                        <span class="tag">Radiation Sensors</span>
-                        <span class="tag">Temperature Sensors</span>
-                        <span class="tag">Gas Sensors</span>
-                        <span class="tag">Signal Processing</span>
-                        <span class="tag">Sensor Fusion</span>
-                        <span class="tag">Calibration</span>
-                        <span class="tag">Safety Thresholds</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dept-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="dept-icon"><i class="fa-solid fa-atom"></i></div>
-                <div class="dept-content">
-                    <h3>Nuclear Engineering <span>2 Members</span></h3>
-                    <div class="dept-tags">
-                        <span class="tag">Problem Definition</span>
-                        <span class="tag">Radiation Protection</span>
-                        <span class="tag">ALARA Principle</span>
-                        <span class="tag">IAEA Standards</span>
-                        <span class="tag">Safety Analysis</span>
-                        <span class="tag">Operational Scenarios</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dept-card" data-aos="fade-up" data-aos-delay="300">
-                <div class="dept-icon"><i class="fa-solid fa-gears"></i></div>
-                <div class="dept-content">
-                    <h3>Production Engineering <span>1 Member</span></h3>
-                    <div class="dept-tags">
-                        <span class="tag">Mechanical Design</span>
-                        <span class="tag">CAD Modeling</span>
-                        <span class="tag">Material Selection</span>
-                        <span class="tag">Manufacturing Plan</span>
-                        <span class="tag">Bill of Materials</span>
-                    </div>
-                </div>
+    <!-- Header Navigation -->
+    <header class="glass-panel">
+        <div class="logo">
+            <svg viewBox="0 0 100 100" class="header-logo-icon">
+                <polygon points="50,18 80,72 20,72" stroke="#00f5ff" stroke-width="2" fill="none" />
+                <circle cx="50" cy="50" r="15" stroke="#39ff14" stroke-width="1.5" fill="none" />
+                <line x1="50" y1="18" x2="50" y2="72" stroke="#00f5ff" stroke-width="1" />
+            </svg>
+            <div class="logo-text">
+                <span class="main-logo">QUANTUM GUARDIAN</span>
+                <span class="sub-logo">ROBOTICS DIVISION</span>
             </div>
         </div>
-    </section>
+        
+        <nav class="nav-links">
+            <a href="#hero">TELEMETRY</a>
+            <a href="#problem">THREATS</a>
+            <a href="#solution">SYSTEM</a>
+            <a href="#superposition">QUANTUM NAV</a>
+            <a href="#sensors">SENSORS</a>
+            <a href="#pipeline">PIPELINE</a>
+            <a href="#implementation">SPECS</a>
+        </nav>
 
-    <!-- Team Integration (Animated) -->
-    <section id="team" class="section">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Team Integration</h2>
-            <div class="integration-wrapper" data-aos="zoom-in">
-                <!-- SVG lines behind elements -->
-                <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;" class="integration-lines">
-                    <line x1="50%" y1="15%" x2="50%" y2="50%" stroke="#D4AF37" stroke-width="2" stroke-dasharray="5,5">
-                        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="2s" repeatCount="indefinite" />
-                    </line>
-                    <line x1="50%" y1="85%" x2="50%" y2="50%" stroke="#D4AF37" stroke-width="2" stroke-dasharray="5,5">
-                        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="2s" repeatCount="indefinite" />
-                    </line>
-                    <line x1="20%" y1="50%" x2="50%" y2="50%" stroke="#D4AF37" stroke-width="2" stroke-dasharray="5,5">
-                        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="2s" repeatCount="indefinite" />
-                    </line>
-                    <line x1="80%" y1="50%" x2="50%" y2="50%" stroke="#D4AF37" stroke-width="2" stroke-dasharray="5,5">
-                        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="2s" repeatCount="indefinite" />
-                    </line>
+        <div class="header-controls">
+            <div class="system-status">
+                <span class="status-pulse"></span>
+                <span class="status-text">SYS ACTIVE</span>
+            </div>
+            <button id="audio-toggle" class="audio-btn glass-btn" title="Toggle Cinematic Audio">
+                <svg viewBox="0 0 24 24" class="audio-icon" id="audio-icon-svg">
+                    <!-- Audio Muted Icon initially -->
+                    <path fill="currentColor" d="M3.27,1.44L2,2.72L5.28,6H3V18H7L12,23V12.72L17.28,18C16.5,18.4 15.6,18.7 14.65,18.9L15,20.87C16.46,20.6 17.84,20 19,19.22L21.28,21.5L22.56,20.22L3.27,1.44M10,17.28L7.83,15H5V9H7.83L10,6.83V17.28M12,4L9.91,6.09L12,8.18V4M16.5,12A4.5,4.5 0 0,0 14,8V10.18L16.4,12.58C16.46,12.4 16.5,12.2 16.5,12M19,12C19,12.9 18.82,13.75 18.47,14.54L19.93,16C20.6,14.8 21,13.4 21,12A9,9 0 0,0 14,3.5V5.5C16.89,6.3 19,9 19,12Z"/>
                 </svg>
-
-                <div class="integration-node node-1">Computer & Systems<br><small>Intelligence & Logic</small></div>
-                <div class="integration-node node-2">Production<br><small>Physical Structure</small></div>
-                <div class="integration-node node-3">Biomedical<br><small>Sensing & Life Safety</small></div>
-                <div class="integration-node node-4">Nuclear<br><small>Domain Expertise</small></div>
-                
-                <div class="robot-center">
-                    <i class="fa-solid fa-robot"></i>
-                    <strong>CoreSentinel</strong>
-                </div>
-            </div>
+                <span class="audio-status-label">AUDIO OFF</span>
+            </button>
         </div>
-    </section>
+    </header>
 
-    <!-- Mechanical Design & Sensors -->
-    <section class="section section-break bg-dark">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Mechanical & Sensor Design</h2>
-            <div class="problem-grid" style="margin-bottom: 4rem;">
-                <div data-aos="fade-right">
-                    <img src="images/robot_cad.png" alt="CAD Design" style="width: 100%; border-radius: 15px;">
-                </div>
-                <div data-aos="fade-left">
-                    <h3 style="font-size: 2rem; color: var(--accent); margin-bottom: 1rem;">Robust Chassis Architecture</h3>
-                    <p style="color: #BBB; margin-bottom: 1rem;">Designed using industrial-grade CAD modeling, the CoreSentinel features a radiation-hardened chassis, all-terrain track wheels, and stabilized sensor mounts.</p>
-                    <ul style="color: #BBB; list-style-position: inside; line-height: 2;">
-                        <li><i class="fa-solid fa-check" style="color: var(--accent); margin-right: 10px;"></i> Lead-lined protective enclosure for electronics</li>
-                        <li><i class="fa-solid fa-check" style="color: var(--accent); margin-right: 10px;"></i> Omni-directional mobility system</li>
-                        <li><i class="fa-solid fa-check" style="color: var(--accent); margin-right: 10px;"></i> Modular payload bays for quick sensor swapping</li>
-                    </ul>
-                </div>
-            </div>
+    <!-- MAIN BODY -->
+    <main>
 
-            <h3 style="text-align: center; color: white; margin-bottom: 2rem; font-size: 2rem;">Instrumentation Suite</h3>
-            <div class="card-grid">
-                <div class="card" data-aos="fade-up">
-                    <i class="fa-solid fa-wave-square card-icon"></i>
-                    <h3>Geiger-Müller Counter</h3>
-                    <p>High-sensitivity radiation detection for Alpha, Beta, and Gamma rays.</p>
+        <!-- 1. HERO SECTION -->
+        <section id="hero" class="active-section">
+            <div class="container hero-grid">
+                <div class="hero-text-content">
+                    <div class="badge-glow">PROJECT STATUS: DEPLOYED</div>
+                    <h1>QUANTUM GUARDIAN</h1>
+                    <h2>AI-Powered Autonomous Drone System for Nuclear Disaster Response and Human Evacuation</h2>
+                    <p class="hero-desc">
+                        A cybernetic intelligence operating in irradiated hazard environments. Utilizing real-time superposition trajectory projection and quantum-inspired path selection to guide survivors out of collapsed reactor corridors.
+                    </p>
+                    <div class="btn-group">
+                        <a href="#superposition" class="btn btn-primary" id="btn-explore-tech">EXPLORE TECHNOLOGY</a>
+                        <a href="#pipeline" class="btn btn-secondary" id="btn-view-arch">VIEW SYSTEM ARCHITECTURE</a>
+                    </div>
                 </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="100">
-                    <i class="fa-solid fa-fire card-icon"></i>
-                    <h3>Thermal Imaging</h3>
-                    <p>Detects overheated valves and abnormal pipe temperatures instantly.</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="200">
-                    <i class="fa-solid fa-smog card-icon"></i>
-                    <h3>Gas Sensors (MQ)</h3>
-                    <p>Monitors hazardous gas leaks in the environment (Hydrogen, Methane).</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="300">
-                    <i class="fa-solid fa-camera card-icon"></i>
-                    <h3>High-Res Vision</h3>
-                    <p>4K Camera system for optical defect detection and teleoperation.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- AI & Safety -->
-    <section class="section section-break bg-light">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Artificial Intelligence & Safety Compliance</h2>
-            
-            <div class="problem-grid">
-                <div data-aos="fade-right">
-                    <h3 style="font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem;"><i class="fa-solid fa-brain" style="color: var(--accent);"></i> Deep Learning Vision</h3>
-                    <p>Utilizing optimized Convolutional Neural Networks (YOLOv8 architecture), CoreSentinel processes video feeds in real-time on edge hardware.</p>
-                    <ul style="margin-top: 1rem; color: #555; padding-left: 20px;">
-                        <li>Micro-crack detection on metallic surfaces.</li>
-                        <li>Rust and corrosion instance segmentation.</li>
-                        <li>Structural anomaly recognition.</li>
-                    </ul>
-                </div>
-                <div data-aos="fade-left">
-                    <h3 style="font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem;"><i class="fa-solid fa-clipboard-check" style="color: var(--accent);"></i> Regulatory Compliance</h3>
-                    <p>Designed strictly under the guidance of Nuclear Engineering principles to ensure legal and physical compliance.</p>
-                    <ul style="margin-top: 1rem; color: #555; padding-left: 20px;">
-                        <li><strong>ALARA Principle:</strong> Completely removes human workers from high-dose zones.</li>
-                        <li><strong>IAEA Standards:</strong> Adheres to International Atomic Energy Agency remote inspection guidelines.</li>
-                        <li>Fail-safe emergency retrieval protocols.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+                <!-- Cinematic Interactive Drone HUD -->
+                <div class="hero-visual-hud glass-panel">
+                    <div class="hud-grid-bg"></div>
+                    <div class="hud-corners">
+                        <div class="c-tl"></div><div class="c-tr"></div>
+                        <div class="c-bl"></div><div class="c-br"></div>
+                    </div>
+                    <div class="hud-header">
+                        <span class="hud-title">DRONE TELEMETRY HUD // ACTIVE_UNIT_09</span>
+                        <span class="hud-timer" id="hud-timer">00:00:00</span>
+                    </div>
+                    
+                    <div class="hud-body">
+                        <!-- Holographic Target Overlay -->
+                        <div class="hologram-rings">
+                            <div class="ring outer-ring"></div>
+                            <div class="ring middle-ring"></div>
+                            <div class="ring inner-ring"></div>
+                        </div>
 
-    <!-- Development Timeline -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">7-Day Development Timeline</h2>
-            
-            <div class="timeline">
-                <div class="timeline-item left" data-aos="fade-right">
-                    <div class="timeline-content">
-                        <span class="timeline-date">Day 1</span>
-                        <h3>Problem Definition</h3>
-                        <p>Defining the scope, ALARA integration, and system requirements.</p>
-                    </div>
-                </div>
-                <div class="timeline-item right" data-aos="fade-left">
-                    <div class="timeline-content">
-                        <span class="timeline-date">Day 2</span>
-                        <h3>Research & Architecture</h3>
-                        <p>Selecting sensors, AI models, and designing ROS node topology.</p>
-                    </div>
-                </div>
-                <div class="timeline-item left" data-aos="fade-right">
-                    <div class="timeline-content">
-                        <span class="timeline-date">Day 3</span>
-                        <h3>Prototyping</h3>
-                        <p>CAD modeling and software simulation in Gazebo.</p>
-                    </div>
-                </div>
-                <div class="timeline-item right" data-aos="fade-left">
-                    <div class="timeline-content">
-                        <span class="timeline-date">Day 4</span>
-                        <h3>Safety & Feasibility</h3>
-                        <p>Cost estimation, risk assessment, and IAEA compliance check.</p>
-                    </div>
-                </div>
-                <div class="timeline-item left" data-aos="fade-right">
-                    <div class="timeline-content">
-                        <span class="timeline-date">Day 5</span>
-                        <h3>Presentation Prep</h3>
-                        <p>Creating pitch deck, UI dashboards, and visual assets.</p>
-                    </div>
-                </div>
-                <div class="timeline-item right" data-aos="fade-left">
-                    <div class="timeline-content">
-                        <span class="timeline-date">Day 6</span>
-                        <h3>Rehearsal</h3>
-                        <p>Cross-department integration testing and pitch practice.</p>
-                    </div>
-                </div>
-                <div class="timeline-item left" data-aos="fade-right">
-                    <div class="timeline-content">
-                        <span class="timeline-date">Day 7</span>
-                        <h3>Final Review</h3>
-                        <p>Final polishing and Global Hackatom Egypt 2026 delivery.</p>
+                        <!-- CSS/SVG Holographic Drone Vector -->
+                        <div class="hologram-drone-container">
+                            <svg viewBox="0 0 200 200" class="hologram-drone">
+                                <!-- Outer sensors -->
+                                <circle cx="100" cy="100" r="85" stroke="rgba(0, 245, 255, 0.15)" stroke-width="1" stroke-dasharray="5 5" fill="none" />
+                                <circle cx="100" cy="100" r="60" stroke="rgba(57, 255, 20, 0.15)" stroke-width="1.5" fill="none" />
+                                
+                                <!-- Core Shield -->
+                                <circle cx="100" cy="100" r="22" stroke="#00f5ff" stroke-width="2" fill="none" />
+                                <polygon points="100,85 113,108 87,108" fill="rgba(57, 255, 20, 0.3)" stroke="#39ff14" stroke-width="1.5" />
+                                
+                                <!-- Rotors -->
+                                <g class="rotor rotor-tl">
+                                    <line x1="100" y1="100" x2="50" y2="50" stroke="#00f5ff" stroke-width="2" />
+                                    <circle cx="50" cy="50" r="14" stroke="#39ff14" stroke-width="1.5" fill="none" />
+                                    <line x1="38" y1="50" x2="62" y2="50" stroke="#39ff14" stroke-width="2" class="spin-blade" />
+                                </g>
+                                <g class="rotor rotor-tr">
+                                    <line x1="100" y1="100" x2="150" y2="50" stroke="#00f5ff" stroke-width="2" />
+                                    <circle cx="150" cy="50" r="14" stroke="#39ff14" stroke-width="1.5" fill="none" />
+                                    <line x1="138" y1="50" x2="162" y2="50" stroke="#39ff14" stroke-width="2" class="spin-blade" />
+                                </g>
+                                <g class="rotor rotor-bl">
+                                    <line x1="100" y1="100" x2="50" y2="150" stroke="#00f5ff" stroke-width="2" />
+                                    <circle cx="50" cy="150" r="14" stroke="#39ff14" stroke-width="1.5" fill="none" />
+                                    <line x1="38" y1="150" x2="62" y2="150" stroke="#39ff14" stroke-width="2" class="spin-blade" />
+                                </g>
+                                <g class="rotor rotor-br">
+                                    <line x1="100" y1="100" x2="150" y2="150" stroke="#00f5ff" stroke-width="2" />
+                                    <circle cx="150" cy="150" r="14" stroke="#39ff14" stroke-width="1.5" fill="none" />
+                                    <line x1="138" y1="150" x2="162" y2="150" stroke="#39ff14" stroke-width="2" class="spin-blade" />
+                                </g>
+
+                                <!-- Scan rays -->
+                                <line x1="100" y1="100" x2="100" y2="200" stroke="rgba(0, 245, 255, 0.4)" stroke-width="1" class="scan-beam" />
+                            </svg>
+                        </div>
+
+                        <!-- Scanning grid telemetry -->
+                        <div class="hud-telemetry">
+                            <div class="telemetry-row"><span class="lbl">LAT:</span><span class="val" id="hud-lat">48.8584° N</span></div>
+                            <div class="telemetry-row"><span class="lbl">LON:</span><span class="val" id="hud-lon">2.2945° E</span></div>
+                            <div class="telemetry-row"><span class="lbl">ALT:</span><span class="val" id="hud-alt">12.4 m</span></div>
+                            <div class="telemetry-row"><span class="lbl">RAD:</span><span class="val warning-text" id="hud-rad">482 mSv/h</span></div>
+                        </div>
+
+                        <!-- Battery gauge -->
+                        <div class="hud-battery">
+                            <div class="battery-label">POWER STORAGE</div>
+                            <div class="battery-outer">
+                                <div class="battery-level" style="width: 87%;"></div>
+                            </div>
+                            <div class="battery-percent">87.4% [CELL_LINK_OK]</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Feasibility Study & Why We Can Win -->
-    <section class="section section-break bg-light">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Feasibility & Competitive Advantage</h2>
-            
-            <div class="table-responsive" data-aos="fade-up" style="margin-bottom: 4rem;">
-                <table class="premium-table">
-                    <thead>
-                        <tr>
-                            <th>Aspect</th>
-                            <th>Traditional Method</th>
-                            <th>CoreSentinel Solution</th>
-                            <th>Impact / ROI</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Human Exposure</strong></td>
-                            <td>High (requires suits, badges, time limits)</td>
-                            <td>Zero (Autonomous remote operation)</td>
-                            <td><span style="color: #27ae60; font-weight: bold;">Infinite Value (Lives saved)</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Inspection Time</strong></td>
-                            <td>Weeks (Prep, execution, decontamination)</td>
-                            <td>Continuous (24/7 Monitoring)</td>
-                            <td><span style="color: #27ae60; font-weight: bold;">90% Time Reduction</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Defect Detection</strong></td>
-                            <td>Subjective human visual inspection</td>
-                            <td>Objective AI-driven micrometer precision</td>
-                            <td><span style="color: #27ae60; font-weight: bold;">High Accuracy & Consistency</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Cost per Inspection</strong></td>
-                            <td>Extremely High (Labor, insurance, downtime)</td>
-                            <td>Low (Initial CAPEX + minimal maintenance)</td>
-                            <td><span style="color: #27ae60; font-weight: bold;">Estimated 3-Month Payback</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card-grid">
-                <div class="card" style="background: var(--primary); color: white;" data-aos="zoom-in">
-                    <h3 style="color: var(--accent); font-size: 1.8rem; margin-bottom: 1rem;">Why We Will Win</h3>
-                    <ul style="list-style: none;">
-                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> <strong>True Interdisciplinary Team:</strong> Bridging 4 distinct engineering domains.</li>
-                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> <strong>High Feasibility:</strong> Using existing ROS/YOLO stacks applied to a niche, high-value problem.</li>
-                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> <strong>Massive Societal Impact:</strong> Direct alignment with global clean energy safety goals.</li>
-                        <li><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> <strong>Ready for Incubation:</strong> Clear path from prototype to industrial manufacturing.</li>
-                    </ul>
+            <!-- Stats Bar -->
+            <div class="hero-stats-bar container">
+                <div class="stat-card glass-panel text-center">
+                    <h3 class="stat-number" data-target="99.98" data-suffix="%">0.00%</h3>
+                    <p class="stat-label">Radiation Detection Accuracy</p>
+                </div>
+                <div class="stat-card glass-panel text-center">
+                    <h3 class="stat-number" data-target="0.12" data-suffix="ms" data-decimals="2">0.00ms</h3>
+                    <p class="stat-label">Path Optimization Speed</p>
+                </div>
+                <div class="stat-card glass-panel text-center">
+                    <h3 class="stat-number" data-target="99.79" data-suffix="%">0.00%</h3>
+                    <p class="stat-label">Autonomous Decision Efficiency</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Conclusion -->
-    <section class="section-break conclusion">
-        <div class="container" data-aos="zoom-in">
-            <h2>Protecting the Heart of Nuclear Energy with AI and Robotics.</h2>
-        </div>
-    </section>
+        <!-- 2. THE PROBLEM SECTION -->
+        <section id="problem">
+            <div class="container grid-2">
+                <!-- Left Content: Danger checklist -->
+                <div class="problem-content">
+                    <div class="danger-header">
+                        <span class="hazard-stripe"></span>
+                        <h2>THE IRRADIATED THREAT</h2>
+                    </div>
+                    <p class="section-subtitle">Why Human First Responders Cannot Intervene</p>
+                    
+                    <div class="threat-items">
+                        <div class="threat-item glass-panel">
+                            <div class="threat-icon">☣</div>
+                            <div class="threat-info">
+                                <h3>Extreme Radiation Leakage</h3>
+                                <p>Lethal dose rates exceeding 50 Sieverts/hour destroy human cellular structures within minutes, causing immediate physical failure.</p>
+                            </div>
+                        </div>
+                        <div class="threat-item glass-panel">
+                            <div class="threat-icon">🚫</div>
+                            <div class="threat-info">
+                                <h3>Complete Human Inaccessibility</h3>
+                                <p>Debris and radioactive structural collapses block conventional search and rescue units, sealing survivors in underground complexes.</p>
+                            </div>
+                        </div>
+                        <div class="threat-item glass-panel">
+                            <div class="threat-icon">🔥</div>
+                            <div class="threat-info">
+                                <h3>Heat & Toxic Environments</h3>
+                                <p>Superheated steam, toxic aerosolized isotopes, and corrosive gases melt standard commercial electronics and disable oxygen support.</p>
+                            </div>
+                        </div>
+                        <div class="threat-item glass-panel">
+                            <div class="threat-icon">⏱</div>
+                            <div class="threat-info">
+                                <h3>Delayed Emergency Response</h3>
+                                <p>Classic mapping methods require manual remote exploration, wasting precious minutes while radiation clouds propagate outwards.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container footer-content">
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 15px;">
-                <img src="images/Logo.jpeg" alt="Robo Active Logo" style="height: 60px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                <h3>Robo Active</h3>
+                <!-- Right Visual: Reactive Core Heat Map & Alarm Panel -->
+                <div class="problem-visualizer-container glass-panel">
+                    <div class="hud-corners">
+                        <div class="c-tl"></div><div class="c-tr"></div>
+                        <div class="c-bl"></div><div class="c-br"></div>
+                    </div>
+                    
+                    <div class="reactor-header">
+                        <div class="alarm-light blink-red"></div>
+                        <div class="reactor-title">SYSTEM THREAT READOUT // DETECTED MELTDOWN</div>
+                    </div>
+
+                    <!-- Reactive Reactor Heat Map -->
+                    <div class="reactor-core-diagram">
+                        <div class="core-grid">
+                            <div class="grid-cell heat-low"></div><div class="grid-cell heat-low"></div><div class="grid-cell heat-med"></div><div class="grid-cell heat-high"></div>
+                            <div class="grid-cell heat-low"></div><div class="grid-cell heat-med"></div><div class="grid-cell heat-critical core-pulse"></div><div class="grid-cell heat-high"></div>
+                            <div class="grid-cell heat-med"></div><div class="grid-cell heat-high"></div><div class="grid-cell heat-critical core-pulse"></div><div class="grid-cell heat-med"></div>
+                            <div class="grid-cell heat-low"></div><div class="grid-cell heat-med"></div><div class="grid-cell heat-high"></div><div class="grid-cell heat-low"></div>
+                        </div>
+                        <div class="reactor-overlay-data">
+                            <div class="overlay-stat"><span class="lbl">CORE TEMP:</span><span class="val text-danger" id="core-temp">1584°C</span></div>
+                            <div class="overlay-stat"><span class="lbl">CORIUM LOSS:</span><span class="val text-danger">CRITICAL</span></div>
+                            <div class="overlay-stat"><span class="lbl">CONTAINMENT:</span><span class="val text-warning">COMPROMISED</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Blinking Warning indicator -->
+                    <div class="warning-alert-panel">
+                        <div class="warning-ticker">
+                            <div class="ticker-wrap">
+                                <span>CRITICAL WARNING: AREA RAD LEVEL EXCEEDED SAFE PEAK LETHAL DANGER ZONE 4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p><strong>Project:</strong> CoreSentinel</p>
-            <p><strong>Event:</strong> Global Hackatom Egypt 2026</p>
-            <div style="margin-top: 20px; color: #555; font-size: 0.9rem;">
-                <p>&copy; 2026 Robo Active Team. All rights reserved.</p>
+        </section>
+
+        <!-- 3. THE SOLUTION SECTION -->
+        <section id="solution">
+            <div class="container">
+                <div class="text-center section-header">
+                    <h2>THE QUANTUM GUARDIAN SOLUTION</h2>
+                    <p class="section-subtitle">Unmanned Autonomous Robotics and Real-Time Environmental Recovery</p>
+                </div>
+
+                <div class="grid-3 solution-cards">
+                    <!-- Card 1: Disaster Inspection -->
+                    <div class="solution-card glass-panel interaction-card">
+                        <div class="sol-card-header">
+                            <span class="sol-num">01</span>
+                            <h3>Autonomous Inspection</h3>
+                        </div>
+                        <div class="sol-visual">
+                            <svg viewBox="0 0 100 100" class="sol-svg">
+                                <circle cx="50" cy="50" r="40" stroke="rgba(0, 245, 255, 0.2)" stroke-width="2" fill="none" />
+                                <rect x="30" y="30" width="40" height="40" stroke="#00f5ff" stroke-width="1.5" fill="none" stroke-dasharray="4 2" />
+                                <circle cx="50" cy="50" r="12" stroke="#39ff14" stroke-width="2" fill="none" />
+                                <line x1="50" y1="10" x2="50" y2="90" stroke="rgba(0,245,255,0.4)" stroke-width="1" />
+                                <line x1="10" y1="50" x2="90" y2="50" stroke="rgba(0,245,255,0.4)" stroke-width="1" />
+                            </svg>
+                        </div>
+                        <p>Fully collision-resilient carbon composite drones navigating reactor complexes using visual SLAM without relying on GPS navigation links.</p>
+                    </div>
+
+                    <!-- Card 2: Radiation Mapping -->
+                    <div class="solution-card glass-panel interaction-card">
+                        <div class="sol-card-header">
+                            <span class="sol-num">02</span>
+                            <h3>Real-Time 3D Mapping</h3>
+                        </div>
+                        <div class="sol-visual">
+                            <svg viewBox="0 0 100 100" class="sol-svg">
+                                <polygon points="50,15 85,35 85,75 50,95 15,75 15,35" stroke="#00f5ff" stroke-width="1.5" fill="none" />
+                                <line x1="50" y1="15" x2="50" y2="95" stroke="#00f5ff" stroke-width="1" />
+                                <line x1="50" y1="55" x2="85" y2="35" stroke="#00f5ff" stroke-width="1" />
+                                <line x1="50" y1="55" x2="15" y2="35" stroke="#00f5ff" stroke-width="1" />
+                                <circle cx="50" cy="35" r="5" fill="#39ff14" />
+                                <circle cx="70" cy="65" r="5" fill="#39ff14" />
+                                <circle cx="30" cy="55" r="5" fill="#39ff14" />
+                            </svg>
+                        </div>
+                        <p>Solid-state LiDAR maps damaged structures in micro-millimeter points, calculating volumetric gas and radioactive isotope density coordinates.</p>
+                    </div>
+
+                    <!-- Card 3: Evacuation Guidance -->
+                    <div class="solution-card glass-panel interaction-card">
+                        <div class="sol-card-header">
+                            <span class="sol-num">03</span>
+                            <h3>Active Evacuation Guidance</h3>
+                        </div>
+                        <div class="sol-visual">
+                            <svg viewBox="0 0 100 100" class="sol-svg">
+                                <circle cx="50" cy="50" r="30" stroke="#39ff14" stroke-dasharray="10 5" stroke-width="2" fill="none" />
+                                <path d="M40 50 L50 40 L60 50 M50 40 L50 68" stroke="#00f5ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" class="bounce-arrow" />
+                            </svg>
+                        </div>
+                        <p>Drones locate humans via thermal detection and guide survivors using targeted voice projection, holographic vector arrows, and laser-guided paths.</p>
+                    </div>
+                </div>
+
+                <!-- Real-time System Log Terminal & Drone Diagnostics -->
+                <div class="solution-diagnostics glass-panel">
+                    <div class="hud-corners">
+                        <div class="c-tl"></div><div class="c-tr"></div>
+                        <div class="c-bl"></div><div class="c-br"></div>
+                    </div>
+                    <div class="diag-header">
+                        <span class="diag-indicator"></span>
+                        <h3>AUTONOMOUS DRONE LOGISTICS FEED</h3>
+                        <span class="unit-id">UNIT: GDN-X9</span>
+                    </div>
+                    <div class="diag-grid">
+                        <div class="diag-telemetry-stats">
+                            <div class="diag-stat"><span class="lbl">PROPULSION:</span><span class="val text-success">98.5% NOMINAL</span></div>
+                            <div class="diag-stat"><span class="lbl">LiDAR LINK:</span><span class="val text-success">STABLE</span></div>
+                            <div class="diag-stat"><span class="lbl">THERMAL ARRAY:</span><span class="val text-success">OPERATIONAL</span></div>
+                            <div class="diag-stat"><span class="lbl">CORE DEFENSE SHIELD:</span><span class="val text-warning">82.1% CHARGED</span></div>
+                        </div>
+                        <div class="terminal-logs" id="terminal-logs">
+                            <!-- Populated dynamically via script.js -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. QUANTUM-INSPIRED SUPERPOSITION NAVIGATION -->
+        <section id="superposition">
+            <div class="container grid-2">
+                <!-- Left Column: Canvas Simulator -->
+                <div class="superposition-simulator glass-panel">
+                    <div class="hud-corners">
+                        <div class="c-tl"></div><div class="c-tr"></div>
+                        <div class="c-bl"></div><div class="c-br"></div>
+                    </div>
+                    <div class="sim-header">
+                        <span>QUANTUM CORE SIMULATOR // TRIPOINT_NAV_CALC</span>
+                        <div class="sim-status" id="sim-status">STANDBY</div>
+                    </div>
+                    
+                    <!-- Canvas Drawing Area -->
+                    <div class="canvas-container">
+                        <canvas id="superposition-canvas"></canvas>
+                        
+                        <!-- Pulse Overlay -->
+                        <div class="collapse-overlay" id="collapse-overlay">
+                            <div class="collapse-text">COLLAPSING WAVEFUNCTION...</div>
+                        </div>
+                    </div>
+
+                    <div class="sim-controls">
+                        <button id="trigger-collapse" class="btn btn-primary btn-block">TRIGGER ROUTE COLLAPSE</button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Equation Math Dashboard -->
+                <div class="superposition-math">
+                    <div class="badge-glow">TRAJECTORY MATHEMATICS</div>
+                    <h2>Quantum-Inspired Superposition Navigation</h2>
+                    <p class="sec-text">
+                        Unlike standard navigation networks that check pathways sequentially, the Quantum Guardian core computes multiple escape trajectories simultaneously in a simulated quantum Hilbert space. By modeling paths as overlapping wavefunctions, the drone evaluates all hazards concurrently before collapsing the system into the single safest physical route.
+                    </p>
+
+                    <!-- Equation UI -->
+                    <div class="equation-panel glass-panel">
+                        <div class="equation-label">OPTIMAL PATH COST FORMULA</div>
+                        <div class="math-formula">
+                            Cost = <span class="term alpha-term">&alpha;R</span> + <span class="term beta-term">&beta;T</span> + <span class="term gamma-term">&gamma;H</span> + <span class="term delta-term">&delta;C</span> + <span class="term epsilon-term">&epsilon;E</span>
+                        </div>
+                        <div class="live-cost-box">
+                            <span class="lbl">TOTAL COMPUTED COST:</span>
+                            <span class="val text-success" id="total-cost">72.50</span>
+                        </div>
+                    </div>
+
+                    <!-- Sliders Dashboard -->
+                    <div class="sliders-grid glass-panel">
+                        <h4>ADJUST OPTIMIZATION COEFFICIENTS</h4>
+                        
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="lbl">&alpha; (Radiation Risk Factor)</span>
+                                <span class="val" id="val-alpha">5.0</span>
+                            </div>
+                            <input type="range" id="slide-alpha" min="0" max="10" step="0.5" value="5.0">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="lbl">&beta; (Traversal Time Importance)</span>
+                                <span class="val" id="val-beta">3.0</span>
+                            </div>
+                            <input type="range" id="slide-beta" min="0" max="10" step="0.5" value="3.0">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="lbl">&gamma; (Heat Danger Coefficient)</span>
+                                <span class="val" id="val-gamma">4.0</span>
+                            </div>
+                            <input type="range" id="slide-gamma" min="0" max="10" step="0.5" value="4.0">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="lbl">&delta; (Collision Probability Penalty)</span>
+                                <span class="val" id="val-delta">6.0</span>
+                            </div>
+                            <input type="range" id="slide-delta" min="0" max="10" step="0.5" value="6.0">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="lbl">&epsilon; (Energy Consumption Weight)</span>
+                                <span class="val" id="val-epsilon">2.0</span>
+                            </div>
+                            <input type="range" id="slide-epsilon" min="0" max="10" step="0.5" value="2.0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. QUANTUM SENSOR SECTION -->
+        <section id="sensors">
+            <div class="container grid-2">
+                <!-- Left Column: Sensors Description -->
+                <div class="sensors-info">
+                    <div class="badge-glow">ADVANCED DETECTION ARRAY</div>
+                    <h2>Quantum-Inspired Sensing Technology</h2>
+                    <p class="sec-text">
+                        The drone carries miniature quantum detection nodes that capture minor atomic anomalies in real-time. By leveraging quantum tunneling and resonance analysis, our sensors scan through meters of collapsed concrete, projecting isotope density fluctuations onto the drone's spatial mapping systems.
+                    </p>
+
+                    <div class="sensor-types-grid">
+                        <div class="sensor-mini-card glass-panel">
+                            <h4>Quantum Radiation Array</h4>
+                            <p>Measures radiation profiles down to sub-nanosievert variations using quantum entangling scintillator matrices.</p>
+                        </div>
+                        <div class="sensor-mini-card glass-panel">
+                            <h4>Magnetic Anomaly Scanning</h4>
+                            <p>Detects structural failures by sensing local magnetic field distortions in reinforced concrete beams.</p>
+                        </div>
+                        <div class="sensor-mini-card glass-panel">
+                            <h4>High-Range Thermal Camera</h4>
+                            <p>Pinpoints human biological signs and chemical core fire hotspots through intense smoke and debris.</p>
+                        </div>
+                        <div class="sensor-mini-card glass-panel">
+                            <h4>AI-Enhanced Diagnostics</h4>
+                            <p>Extracts features in noisy sensor signals, filtering radiation static from imaging pixels.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Scanning Radar -->
+                <div class="radar-visualizer-container glass-panel">
+                    <div class="hud-corners">
+                        <div class="c-tl"></div><div class="c-tr"></div>
+                        <div class="c-bl"></div><div class="c-br"></div>
+                    </div>
+                    <div class="radar-header">
+                        <span>DETECTION RADAR ARRAY // SCANNING CORES</span>
+                        <span class="scan-frequency">4.8 GHz</span>
+                    </div>
+
+                    <!-- Radar canvas -->
+                    <div class="radar-canvas-wrapper">
+                        <canvas id="radar-canvas"></canvas>
+                    </div>
+
+                    <div class="radar-status-info">
+                        <div class="status-col"><span class="lbl">TARGETS FOUND:</span><span class="val text-success" id="radar-targets-count">3 ACTIVE</span></div>
+                        <div class="status-col"><span class="lbl">SCAN RATE:</span><span class="val">60 FPS</span></div>
+                        <div class="status-col"><span class="lbl">FILTER:</span><span class="val text-cyan">QUAL_RESONANCE</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. SYSTEM PIPELINE SECTION -->
+        <section id="pipeline">
+            <div class="container">
+                <div class="text-center section-header">
+                    <h2>SYSTEM PIPELINE ARCHITECTURE</h2>
+                    <p class="section-subtitle">Real-Time Autonomous Evacuation Cycle</p>
+                </div>
+
+                <!-- Animated Node Pipeline Diagram -->
+                <div class="pipeline-container glass-panel">
+                    <div class="hud-corners">
+                        <div class="c-tl"></div><div class="c-tr"></div>
+                        <div class="c-bl"></div><div class="c-br"></div>
+                    </div>
+                    <div class="pipeline-nodes">
+                        <!-- Node 1 -->
+                        <div class="pipeline-node active" data-step="0">
+                            <div class="node-icon">📡</div>
+                            <div class="node-label">Disaster Detection</div>
+                            <div class="connector"></div>
+                        </div>
+                        <!-- Node 2 -->
+                        <div class="pipeline-node" data-step="1">
+                            <div class="node-icon">🗺️</div>
+                            <div class="node-label">Environment Mapping</div>
+                            <div class="connector"></div>
+                        </div>
+                        <!-- Node 3 -->
+                        <div class="pipeline-node" data-step="2">
+                            <div class="node-icon">⚠️</div>
+                            <div class="node-label">Hazard Analysis</div>
+                            <div class="connector"></div>
+                        </div>
+                        <!-- Node 4 -->
+                        <div class="pipeline-node" data-step="3">
+                            <div class="node-icon">🔀</div>
+                            <div class="node-label">Superposition Path Gen</div>
+                            <div class="connector"></div>
+                        </div>
+                        <!-- Node 5 -->
+                        <div class="pipeline-node" data-step="4">
+                            <div class="node-icon">⚙️</div>
+                            <div class="node-label">Quantum Optimization</div>
+                            <div class="connector"></div>
+                        </div>
+                        <!-- Node 6 -->
+                        <div class="pipeline-node" data-step="5">
+                            <div class="node-icon">✔️</div>
+                            <div class="node-label">Optimal Route Selection</div>
+                            <div class="connector"></div>
+                        </div>
+                        <!-- Node 7 -->
+                        <div class="pipeline-node" data-step="6">
+                            <div class="node-icon">📢</div>
+                            <div class="node-label">Evacuation Guidance</div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive data card triggered by nodes -->
+                    <div class="pipeline-card glass-panel" id="pipeline-info-card">
+                        <div class="card-glow"></div>
+                        <h4 id="pipeline-title">Disaster Detection</h4>
+                        <div class="pipeline-detail-meta">
+                            <span class="lbl">LATENCY:</span><span class="val text-success" id="pipeline-latency">0.05 ms</span>
+                            <span class="lbl">PROTOCOL:</span><span class="val text-cyan" id="pipeline-protocol">ROS2_ALERT_DAEMON</span>
+                        </div>
+                        <p id="pipeline-desc">Quantum Guardian drones constantly monitor alert systems. Instantly upon receiving alert signals, units deploy from secure charging lockers and enter the nuclear core facility.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. PRACTICAL IMPLEMENTATION SECTION -->
+        <section id="implementation">
+            <div class="container grid-2">
+                <!-- Left: Hardware & Software details -->
+                <div class="implementation-specs">
+                    <div class="badge-glow">ROBOTICS SPECIFICATION</div>
+                    <h2>Practical System Implementation</h2>
+                    <p class="sec-text">
+                        Designed with existing robotics platforms in mind, the drone is built using high-performance, radiation-shielded off-the-shelf development boards and advanced sensors, programmed to operate inside ROS2-integrated clusters.
+                    </p>
+
+                    <div class="specs-grid">
+                        <div class="spec-category glass-panel">
+                            <h4>🤖 SYSTEM HARDWARE</h4>
+                            <ul>
+                                <li><strong>LiDAR Scanner:</strong> Solid-State Ouster OS1 (2D/3D depth mapping)</li>
+                                <li><strong>Thermal Imaging:</strong> FLIR Lepton 3.5 micro thermal camera</li>
+                                <li><strong>Radiation Sensors:</strong> Miniature solid-state Geiger matrices</li>
+                                <li><strong>Onboard Compute:</strong> NVIDIA Jetson Orin Nano / Raspberry Pi 5</li>
+                                <li><strong>Shielding:</strong> Lead-rubber compound overlay for sensitive IC chips</li>
+                            </ul>
+                        </div>
+                        <div class="spec-category glass-panel">
+                            <h4>💻 SOFTWARE LAYER</h4>
+                            <ul>
+                                <li><strong>Core OS:</strong> Ubuntu 22.04 LTS with RT-Kernel</li>
+                                <li><strong>Middleware:</strong> ROS2 (Robot Operating System) Humble</li>
+                                <li><strong>Vision Processing:</strong> OpenCV with hardware acceleration</li>
+                                <li><strong>LiDAR SLAM:</strong> Cartographer & RTAB-Map</li>
+                                <li><strong>Math Library:</strong> Python SciPy, NumPy, custom optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: High-tech visual mock terminal of Python / ROS2 script -->
+                <div class="implementation-terminal glass-panel">
+                    <div class="hud-corners">
+                        <div class="c-tl"></div><div class="c-tr"></div>
+                        <div class="c-bl"></div><div class="c-br"></div>
+                    </div>
+                    <div class="terminal-bar">
+                        <span class="terminal-dot red-dot"></span>
+                        <span class="terminal-dot yellow-dot"></span>
+                        <span class="terminal-dot green-dot"></span>
+                        <span class="terminal-title">quantum_nav_core.py // ROS2 Node</span>
+                    </div>
+                    <div class="terminal-body-code">
+<pre><code><span class="keyword">import</span> rclpy
+<span class="keyword">from</span> rclpy.node <span class="keyword">import</span> Node
+<span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> LaserScan
+<span class="keyword">from</span> guardian_interfaces.msg <span class="keyword">import</span> QuantumPath
+
+<span class="keyword">class</span> <span class="class-name">QuantumNavNode</span>(Node):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(self):
+        super().__init__(<span class="string">'quantum_nav_core'</span>)
+        self.lidar_sub = self.create_subscription(
+            LaserScan, <span class="string">'/scan'</span>, self.lidar_callback, 10)
+        self.path_pub = self.create_publisher(
+            QuantumPath, <span class="string">'/optimal_trajectory'</span>, 10)
+        self.get_logger().info(<span class="string">'[SYS] Quantum Nav initiated.'</span>)
+
+    <span class="keyword">def</span> <span class="function-name">lidar_callback</span>(self, msg):
+        <span class="comment"># Map coordinates & run superposition</span>
+        raw_ranges = msg.ranges
+        optimal_route = self.calculate_quantum_cost(raw_ranges)
+        self.path_pub.publish(optimal_route)
+
+    <span class="keyword">def</span> <span class="function-name">calculate_quantum_cost</span>(self, data):
+        <span class="comment"># Cost = αR + βT + γH + δC + εE</span>
+        path_matrix = self.generate_path_matrix(data)
+        collapsed_path = self.collapse_wavefunction(path_matrix)
+        <span class="keyword">return</span> collapsed_path</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. FUTURE OF NUCLEAR ROBOTICS SECTION -->
+        <section id="future">
+            <div class="container">
+                <div class="text-center section-header">
+                    <h2>THE FUTURE OF NUCLEAR SAFETY</h2>
+                    <p class="section-subtitle">Robotics Concepts for the Next Decade (2045+)</p>
+                </div>
+
+                <div class="grid-3 future-grid">
+                    <div class="future-card glass-panel interaction-card">
+                        <div class="card-icon">🌀</div>
+                        <h3>Cooperative Swarm Intelligence</h3>
+                        <p>Drones organizing in decentralized networks, sharing radiation maps over local ultra-wideband mesh connections to map entire factories in seconds.</p>
+                    </div>
+
+                    <div class="future-card glass-panel interaction-card">
+                        <div class="card-icon">👥</div>
+                        <h3>Reactor Digital Twins</h3>
+                        <p>Creating exact virtual replicas of power stations updated instantly by drone sensors, allowing ground commanders to analyze damage safely in VR.</p>
+                    </div>
+
+                    <div class="future-card glass-panel interaction-card">
+                        <div class="card-icon">🧠</div>
+                        <h3>Quantum Cloud Computing</h3>
+                        <p>Outsourcing heavy route computations to central quantum supercomputers via encrypted communication beams, boosting optimization speeds to micro-nanoseconds.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. FINAL IMPACT & CALL-TO-ACTION SECTION -->
+        <section id="impact">
+            <div class="container text-center impact-container glass-panel">
+                <div class="hud-corners">
+                    <div class="c-tl"></div><div class="c-tr"></div>
+                    <div class="c-bl"></div><div class="c-br"></div>
+                </div>
+                <div class="impact-shield">🛡️</div>
+                <h2>Protecting Human Lives Through Intelligent Autonomous Systems</h2>
+                <p>
+                    Quantum Guardian bridges the gap between dangerous nuclear environments and human safety. By replacing frontline responders with autonomous AI systems, we guarantee zero casualty counts during containment breaches.
+                </p>
+
+                <div class="btn-group center-btn-group">
+                    <button class="btn btn-primary" id="btn-download-research">DOWNLOAD RESEARCH SPEC</button>
+                    <a href="#implementation" class="btn btn-secondary">VIEW ARCHITECTURE</a>
+                    <button class="btn btn-glow" id="btn-start-simulation">START MELTDOWN SIMULATION</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="glass-panel">
+        <div class="container footer-grid">
+            <div class="footer-left">
+                <span class="footer-title">QUANTUM GUARDIAN</span>
+                <p>© 2045 Quantum Guardian Systems Inc. Research & Robotics Division.</p>
+            </div>
+            <div class="footer-right">
+                <span>SYSTEM STATUS: <span class="text-success">NOMINAL</span></span>
+                <span>BUILD: 09.28.A</span>
+                <span>SECURE DATA LINK</span>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script>
-        // Initialize AOS animations
-        AOS.init({
-            duration: 800,
-            offset: 100,
-            once: true
-        });
+    <!-- INTERACTIVE FULLSCREEN SIMULATION OVERLAY -->
+    <div id="simulation-overlay">
+        <div class="sim-hud">
+            <!-- Warnings blink -->
+            <div class="sim-alert-banner">
+                <span class="alert-pulse-red"></span>
+                <span>SIMULATION ACTIVE: REACTOR COLLAPSE SCENARIO</span>
+            </div>
 
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+            <!-- Cockpit view HUD lines -->
+            <div class="sim-crosshair">
+                <div class="ch-h"></div>
+                <div class="ch-v"></div>
+            </div>
 
-        // Smooth Scrolling for Nav Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+            <!-- Drone logs -->
+            <div class="sim-telemetry-feed" id="sim-telemetry">
+                <div>[SYSTEM] Initiating drone mock deployment...</div>
+            </div>
+
+            <div class="sim-metrics">
+                <div class="metric"><span class="lbl">ALTITUDE</span><span class="val" id="sim-alt">0.0m</span></div>
+                <div class="metric"><span class="lbl">RAD SPEED</span><span class="val text-danger" id="sim-rad">0 mSv</span></div>
+                <div class="metric"><span class="lbl">ESC PATH</span><span class="val text-success" id="sim-status-label">CALCULATING</span></div>
+            </div>
+
+            <div class="sim-controls-panel">
+                <div class="sim-desc-label">Drone is navigating reactor layout using computed path...</div>
+                <button class="btn btn-danger" id="btn-abort-simulation">ABORT SIMULATION</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Javascript File -->
+    <script src="script.js"></script>
 </body>
 </html>
