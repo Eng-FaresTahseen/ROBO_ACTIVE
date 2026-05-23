@@ -58,13 +58,21 @@ document.addEventListener('DOMContentLoaded', () => {
     runBootloader();
 
     // ==================================================
-    // 2. WEB AUDIO API SYNTHESIZER
+    // 2. WEB AUDIO API SYNTHESIZER & AMBIENT DRONE
     // ==================================================
     let audioCtx = null;
     let audioEnabled = false;
     const audioToggle = document.getElementById('audio-toggle');
     const audioLabel = audioToggle.querySelector('.audio-status-label');
     const audioIconPath = audioToggle.querySelector('path');
+
+    // Ambient Drone Synthesizer Nodes
+    let droneOsc1 = null;
+    let droneOsc2 = null;
+    let droneFilter = null;
+    let droneLfo = null;
+    let droneGain = null;
+    let geigerTimeout = null;
 
     // Toggle Audio Context
     audioToggle.addEventListener('click', () => {
@@ -83,13 +91,163 @@ document.addEventListener('DOMContentLoaded', () => {
             // Speaker icon
             audioIconPath.setAttribute('d', 'M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18.07,19.86 21,16.28 21,12C21,7.72 18.07,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3Z');
             playSynthSound('click');
+            
+            // Start ambient drone & Geiger ticker
+            startAmbientDrone();
+            runGeigerTicker();
         } else {
             audioLabel.textContent = "AUDIO OFF";
             audioToggle.classList.remove('active');
             // Muted Speaker icon
             audioIconPath.setAttribute('d', 'M3.27,1.44L2,2.72L5.28,6H3V18H7L12,23V12.72L17.28,18C16.5,18.4 15.6,18.7 14.65,18.9L15,20.87C16.46,20.6 17.84,20 19,19.22L21.28,21.5L22.56,20.22L3.27,1.44M10,17.28L7.83,15H5V9H7.83L10,6.83V17.28M12,4L9.91,6.09L12,8.18V4M16.5,12A4.5,4.5 0 0,0 14,8V10.18L16.4,12.58C16.46,12.4 16.5,12.2 16.5,12M19,12C19,12.9 18.82,13.75 18.47,14.54L19.93,16C20.6,14.8 21,13.4 21,12A9,9 0 0,0 14,3.5V5.5C16.89,6.3 19,9 19,12Z');
+            
+            // Stop ambient drone & Geiger ticker
+            stopAmbientDrone();
+            if (geigerTimeout) clearTimeout(geigerTimeout);
         }
     });
+
+    function startAmbientDrone() {
+        if (!audioCtx || !audioEnabled) return;
+        try {
+            droneOsc1 = audioCtx.createOscillator();
+            droneOsc2 = audioCtx.createOscillator();
+            droneFilter = audioCtx.createBiquadFilter();
+            droneLfo = audioCtx.createOscillator();
+            const lfoGain = audioCtx.createGain();
+            droneGain = audioCtx.createGain();
+
+            droneOsc1.type = 'sawtooth';
+            droneOsc1.frequency.setValueAtTime(55, audioCtx.currentTime); // Low A1 note
+            
+            droneOsc2.type = 'triangle';
+            droneOsc2.frequency.setValueAtTime(55.3, audioCtx.currentTime); // Detuned low A1 note
+
+            droneFilter.type = 'lowpass';
+            droneFilter.frequency.setValueAtTime(130, audioCtx.currentTime);
+            droneFilter.Q.setValueAtTime(2.5, audioCtx.currentTime);
+
+            // Modulate filter cutoff frequency with LFO
+            droneLfo.type = 'sine';
+            droneLfo.frequency.setValueAtTime(0.05, audioCtx.currentTime); // Slow 0.05Hz filter sweep
+
+            lfoGain.gain.setValueAtTime(50, audioCtx.currentTime);
+            droneGain.gain.setValueAtTime(0.06, audioCtx.currentTime); // Low volume level
+
+            droneLfo.connect(lfoGain);
+            lfoGain.connect(droneFilter.frequency);
+
+            droneOsc1.connect(droneFilter);
+            droneOsc2.connect(droneFilter);
+            droneFilter.connect(droneGain);
+            droneGain.connect(audioCtx.destination);
+
+            droneOsc1.start();
+            droneOsc2.start();
+            droneLfo.start();
+        } catch (e) {
+            console.error("Failed to start synthesizer drone: ", e);
+        }
+    }
+
+    function stopAmbientDrone() {
+        if (droneOsc1) { try { droneOsc1.stop(); } catch(e){} droneOsc1 = null; }
+        if (droneOsc2) { try { droneOsc2.stop(); } catch(e){} droneOsc2 = null; }
+        if (droneLfo) { try { droneLfo.stop(); } catch(e){} droneLfo = null; }
+    }
+
+    function playGeigerClick() {
+        if (!audioEnabled || !audioCtx) return;
+        try {
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(2800, now);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 0.003);
+
+            gainNode.gain.setValueAtTime(0.012, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.004);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.004);
+        } catch(e){}
+    }
+
+    function runGeigerTicker() {
+        if (geigerTimeout) clearTimeout(geigerTimeout);
+        if (!audioEnabled || !audioCtx) return;
+
+        let delay = Math.random() * 3200 + 400; // Normal clicking speed
+        let inHazardZone = false;
+
+        const problemSection = document.getElementById('problem');
+        const monitorSection = document.getElementById('monitor');
+
+        if (simActive) {
+            const radText = document.getElementById('sim-rad') ? document.getElementById('sim-rad').innerText : '';
+            const radVal = parseInt(radText) || 200;
+            delay = Math.max(30, 360 - (radVal / 1000) * 320); // Faster radiation clicks
+            inHazardZone = true;
+        } else {
+            const scrollPos = window.scrollY;
+            const probTop = problemSection ? problemSection.offsetTop - 300 : 99999;
+            const probBottom = problemSection ? probTop + problemSection.offsetHeight : 0;
+            const monTop = monitorSection ? monitorSection.offsetTop - 300 : 99999;
+            const monBottom = monitorSection ? monTop + monitorSection.offsetHeight : 0;
+
+            if ((scrollPos > probTop && scrollPos < probBottom) || (scrollPos > monTop && scrollPos < monBottom)) {
+                delay = Math.random() * 600 + 80; // Speed up clicks inside danger zones
+                inHazardZone = true;
+            }
+        }
+
+        if (inHazardZone || Math.random() < 0.12) {
+            playGeigerClick();
+        }
+
+        geigerTimeout = setTimeout(runGeigerTicker, delay);
+    }
+
+    // Bind scroll trigger for Geiger speed change
+    window.addEventListener('scroll', () => {
+        if (audioEnabled && audioCtx) {
+            runGeigerTicker();
+        }
+    });
+
+    // ==================================================
+    // 2.5. MOBILE MENU CONTROLLER
+    // ==================================================
+    const hamburgerToggle = document.getElementById('hamburger-toggle');
+    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+    const mobileNavClose = document.getElementById('mobile-nav-close');
+    const mobLinks = document.querySelectorAll('.mob-link');
+
+    if (hamburgerToggle && mobileNavOverlay) {
+        hamburgerToggle.addEventListener('click', () => {
+            hamburgerToggle.classList.toggle('active');
+            mobileNavOverlay.classList.toggle('active');
+            playSynthSound('click');
+        });
+
+        mobileNavClose.addEventListener('click', () => {
+            hamburgerToggle.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+            playSynthSound('click');
+        });
+
+        mobLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerToggle.classList.remove('active');
+                mobileNavOverlay.classList.remove('active');
+            });
+        });
+    }
 
     // Synth trigger
     function playSynthSound(type, customFreq = null) {
@@ -159,39 +317,62 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeBgCanvas();
     window.addEventListener('resize', resizeBgCanvas);
 
+    let mouse = { x: null, y: null, radius: 150 };
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+    });
+    window.addEventListener('mouseout', () => {
+        mouse.x = undefined;
+        mouse.y = undefined;
+    });
+
     class Particle {
         constructor() {
             this.x = Math.random() * bgCanvas.width;
             this.y = Math.random() * bgCanvas.height;
-            this.size = Math.random() * 2.5 + 0.5;
-            this.speedX = (Math.random() - 0.5) * 0.4;
-            this.speedY = (Math.random() - 0.5) * 0.4;
+            this.size = Math.random() * 2 + 1;
+            this.baseX = this.x;
+            this.baseY = this.y;
+            this.density = (Math.random() * 30) + 1;
             this.color = particleColors[Math.floor(Math.random() * particleColors.length)];
-            this.glow = Math.random() * 10 + 5;
         }
-
         update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
+            let dx = mouse.x - this.x;
+            let dy = mouse.y - this.y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+            let forceDirectionX = dx / distance;
+            let forceDirectionY = dy / distance;
+            let maxDistance = mouse.radius;
+            let force = (maxDistance - distance) / maxDistance;
+            let directionX = forceDirectionX * force * this.density;
+            let directionY = forceDirectionY * force * this.density;
 
-            // Bounce check
-            if (this.x < 0 || this.x > bgCanvas.width) this.speedX *= -1;
-            if (this.y < 0 || this.y > bgCanvas.height) this.speedY *= -1;
+            if (distance < mouse.radius) {
+                this.x -= directionX;
+                this.y -= directionY;
+            } else {
+                if (this.x !== this.baseX) {
+                    let dx = this.x - this.baseX;
+                    this.x -= dx / 10;
+                }
+                if (this.y !== this.baseY) {
+                    let dy = this.y - this.baseY;
+                    this.y -= dy / 10;
+                }
+            }
         }
-
         draw() {
             bgCtx.beginPath();
             bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             bgCtx.fillStyle = this.color;
-            bgCtx.shadowBlur = this.glow;
-            bgCtx.shadowColor = this.color;
             bgCtx.fill();
         }
     }
 
     function initParticles() {
         particles = [];
-        const count = Math.min(Math.floor(window.innerWidth / 15), 100);
+        const count = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 9000), 120);
         for (let i = 0; i < count; i++) {
             particles.push(new Particle());
         }
@@ -199,18 +380,235 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     window.addEventListener('resize', initParticles);
 
+    function connectParticles() {
+        let opacityValue = 1;
+        for (let a = 0; a < particles.length; a++) {
+            for (let b = a; b < particles.length; b++) {
+                let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x))
+                    + ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
+                if (distance < (bgCanvas.width / 7) * (bgCanvas.height / 7)) {
+                    opacityValue = 1 - (distance / 20000);
+                    bgCtx.strokeStyle = `rgba(0, 245, 255, ${opacityValue})`;
+                    bgCtx.lineWidth = 0.5;
+                    bgCtx.beginPath();
+                    bgCtx.moveTo(particles[a].x, particles[a].y);
+                    bgCtx.lineTo(particles[b].x, particles[b].y);
+                    bgCtx.stroke();
+                }
+            }
+        }
+    }
+
     function animateParticles() {
         bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-        // Reset shadows for background grid overlay
-        bgCtx.shadowBlur = 0;
-
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
         }
+        connectParticles();
         requestAnimationFrame(animateParticles);
     }
     animateParticles();
+
+    // ==================================================
+    // 3.5 TACTICAL HAZARD MONITOR (NEW VERCEL PORT)
+    // ==================================================
+    const fleetSlider = document.getElementById('slide-fleet-size');
+    const varianceSlider = document.getElementById('slide-variance');
+    const tbody = document.querySelector('#telemetry-data-table tbody');
+    const consoleFeed = document.getElementById('alert-console');
+    
+    // Sliders & Table
+    function generateTelemetryData() {
+        if(!tbody) return;
+        const count = parseInt(fleetSlider.value);
+        const variance = parseInt(varianceSlider.value) / 100;
+        tbody.innerHTML = '';
+        
+        for(let i=0; i<count; i++) {
+            const droneId = 'DRN-' + Math.floor(Math.random() * 9000 + 1000);
+            const statusInt = Math.random();
+            let status = 'NOMINAL';
+            let statusClass = 'status-nominal';
+            
+            if (statusInt > (1 - variance)) {
+                status = 'CRITICAL';
+                statusClass = 'status-critical';
+            } else if (statusInt > (1 - variance*2)) {
+                status = 'WARNING';
+                statusClass = 'status-warning';
+            }
+            
+            const rad = (Math.random() * 50 * (1+variance)).toFixed(2) + ' Sv/h';
+            const temp = (Math.random() * 400 * (1+variance)).toFixed(1) + ' °C';
+            const depth = Math.floor(Math.random() * 5000) + ' m';
+            
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${droneId}</td>
+                <td><span class="${statusClass}">${status}</span></td>
+                <td>${rad}</td>
+                <td>${temp}</td>
+                <td>${depth}</td>
+            `;
+            tbody.appendChild(tr);
+        }
+    }
+    
+    if(fleetSlider && varianceSlider) {
+        fleetSlider.addEventListener('input', () => {
+            document.getElementById('fleet-size-val').textContent = fleetSlider.value;
+            generateTelemetryData();
+        });
+        varianceSlider.addEventListener('input', () => {
+            document.getElementById('variance-val').textContent = varianceSlider.value + '%';
+            generateTelemetryData();
+        });
+        generateTelemetryData();
+    }
+    
+    // Heatmaps Animation
+    const radCanvas = document.getElementById('rad-heatmap-canvas');
+    const tempCanvas = document.getElementById('temp-heatmap-canvas');
+    let mapFrame = 0;
+    
+    function drawHeatmap(canvas, type) {
+        if(!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        
+        ctx.fillStyle = 'rgba(10, 15, 25, 0.2)';
+        ctx.fillRect(0, 0, w, h);
+        
+        const variance = varianceSlider ? parseInt(varianceSlider.value) / 100 : 0.5;
+        
+        // Draw random pulses
+        if (Math.random() < 0.1 * (1 + variance)) {
+            const x = Math.random() * w;
+            const y = Math.random() * h;
+            const r = Math.random() * 30 + 10;
+            
+            const grad = ctx.createRadialGradient(x,y,0, x,y,r);
+            if (type === 'rad') {
+                grad.addColorStop(0, 'rgba(57,255,20, 0.8)');
+                grad.addColorStop(1, 'rgba(57,255,20, 0)');
+            } else {
+                grad.addColorStop(0, 'rgba(255,69,0, 0.8)');
+                grad.addColorStop(1, 'rgba(255,69,0, 0)');
+            }
+            ctx.beginPath();
+            ctx.arc(x,y,r, 0, Math.PI*2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+        }
+        
+        // Scanline
+        ctx.fillStyle = 'rgba(0, 245, 255, 0.1)';
+        ctx.fillRect(0, (mapFrame * 2) % h, w, 2);
+    }
+    
+    function animateHeatmaps() {
+        drawHeatmap(radCanvas, 'rad');
+        drawHeatmap(tempCanvas, 'temp');
+        mapFrame++;
+        requestAnimationFrame(animateHeatmaps);
+    }
+    if(radCanvas && tempCanvas) {
+        // Fix internal dimensions
+        radCanvas.width = radCanvas.clientWidth;
+        radCanvas.height = radCanvas.clientHeight;
+        tempCanvas.width = tempCanvas.clientWidth;
+        tempCanvas.height = tempCanvas.clientHeight;
+        animateHeatmaps();
+    }
+    
+    // Console Feed
+    const consoleMsgs = [
+        "SYS: Recalibrating primary sensors...",
+        "WARN: Unidentified anomaly detected in Sector 7G.",
+        "SYS: Data link established with Fleet Leader.",
+        "CRIT: Structural integrity compromised on DRN-4092.",
+        "SYS: Cooling systems operating at 94% capacity.",
+        "WARN: Radiation spike detected on surface.",
+        "SYS: Automated drone recovery initiated.",
+        "SYS: Routing telemetry through secondary relay."
+    ];
+    function updateConsole() {
+        if(!consoleFeed) return;
+        if(Math.random() < 0.3) { 
+            const msg = consoleMsgs[Math.floor(Math.random() * consoleMsgs.length)];
+            const time = new Date().toLocaleTimeString();
+            const p = document.createElement('p');
+            p.style.margin = '4px 0';
+            p.innerHTML = `<span style="color:var(--neon-blue)">[${time}]</span> ${msg}`;
+            consoleFeed.appendChild(p);
+            consoleFeed.scrollTop = consoleFeed.scrollHeight;
+            
+            while(consoleFeed.childElementCount > 20) {
+                consoleFeed.removeChild(consoleFeed.firstChild);
+            }
+        }
+    }
+    setInterval(updateConsole, 2500);
+    // Simulation Logic
+    const btnMeltdown = document.getElementById('btn-trigger-meltdown');
+    if(btnMeltdown) {
+        btnMeltdown.addEventListener('click', () => {
+            // Push variance to max
+            if(varianceSlider && fleetSlider) {
+                varianceSlider.value = 95;
+                document.getElementById('variance-val').textContent = '95%';
+                fleetSlider.value = 100;
+                document.getElementById('fleet-size-val').textContent = '100';
+                generateTelemetryData();
+            }
+            
+            // Alter particle engine to red chaotic state
+            particleColors.length = 0;
+            particleColors.push('rgba(255, 0, 0, 0.8)', 'rgba(255, 69, 0, 0.6)');
+            for(let p of particles) {
+                p.color = particleColors[Math.floor(Math.random() * particleColors.length)];
+                p.density = (Math.random() * 80) + 20; // increase speed/chaos
+            }
+            
+            // Spam the console
+            consoleMsgs.push(
+                "CRITICAL: CONTAINMENT BREACH DETECTED!",
+                "CRITICAL: LETHAL RADIATION SPIKE!",
+                "CRITICAL: EVACUATE IMMEDIATELY!",
+                "SYS: ALL DRONES ENTERING EMERGENCY MODE!"
+            );
+            for(let i=0; i<10; i++) {
+                setTimeout(updateConsole, i * 150);
+            }
+            
+            // Trigger audio alarm if available
+            if(window.audioCtx && window.audioCtx.state === 'running') {
+                setInterval(() => {
+                    const o = window.audioCtx.createOscillator();
+                    o.type = 'sawtooth';
+                    o.frequency.setValueAtTime(400, window.audioCtx.currentTime);
+                    o.frequency.linearRampToValueAtTime(800, window.audioCtx.currentTime + 0.5);
+                    const g = window.audioCtx.createGain();
+                    g.gain.setValueAtTime(0, window.audioCtx.currentTime);
+                    g.gain.linearRampToValueAtTime(0.3, window.audioCtx.currentTime + 0.1);
+                    g.gain.linearRampToValueAtTime(0, window.audioCtx.currentTime + 1.0);
+                    o.connect(g);
+                    g.connect(window.audioCtx.destination);
+                    o.start();
+                    o.stop(window.audioCtx.currentTime + 1.0);
+                }, 1000);
+            }
+            
+            btnMeltdown.textContent = "MELTDOWN IN PROGRESS";
+            btnMeltdown.disabled = true;
+            btnMeltdown.style.background = 'rgba(255, 0, 0, 0.3)';
+            btnMeltdown.style.color = 'white';
+            btnMeltdown.style.border = '2px solid red';
+            btnMeltdown.style.boxShadow = '0 0 20px rgba(255, 0, 0, 0.8)';
+        });
+    }
 
     // ==================================================
     // 4. HERO SECTION COUNTERS & TELEMETRY

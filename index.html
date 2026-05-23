@@ -62,6 +62,7 @@
             <a href="#superposition">QUANTUM NAV</a>
             <a href="#sensors">SENSORS</a>
             <a href="#pipeline">PIPELINE</a>
+            <a href="#monitor">MONITOR</a>
             <a href="#implementation">SPECS</a>
         </nav>
 
@@ -76,6 +77,13 @@
                     <path fill="currentColor" d="M3.27,1.44L2,2.72L5.28,6H3V18H7L12,23V12.72L17.28,18C16.5,18.4 15.6,18.7 14.65,18.9L15,20.87C16.46,20.6 17.84,20 19,19.22L21.28,21.5L22.56,20.22L3.27,1.44M10,17.28L7.83,15H5V9H7.83L10,6.83V17.28M12,4L9.91,6.09L12,8.18V4M16.5,12A4.5,4.5 0 0,0 14,8V10.18L16.4,12.58C16.46,12.4 16.5,12.2 16.5,12M19,12C19,12.9 18.82,13.75 18.47,14.54L19.93,16C20.6,14.8 21,13.4 21,12A9,9 0 0,0 14,3.5V5.5C16.89,6.3 19,9 19,12Z"/>
                 </svg>
                 <span class="audio-status-label">AUDIO OFF</span>
+            </button>
+            
+            <!-- Mobile Menu Toggle -->
+            <button id="hamburger-toggle" class="hamburger-btn glass-btn" aria-label="Toggle Mobile Menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
             </button>
         </div>
     </header>
@@ -590,6 +598,252 @@
             </div>
         </section>
 
+        <!-- 6.4 PROJECT LORE SECTION -->
+        <section id="lore" style="padding-bottom: 2rem;">
+            <div class="container">
+                <div class="glass-panel lore-panel" style="border-left: 4px solid var(--neon-blue); position: relative; overflow: hidden;">
+                    <div class="lore-content" style="padding: 2rem;">
+                        <h2 style="color: var(--neon-blue); margin-bottom: 0.5rem; letter-spacing: 2px;">THE HACKATOM INITIATIVE</h2>
+                        <p class="lore-lead" style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem; text-transform: uppercase;">Post-Breach Autonomous Core Reconnaissance</p>
+                        <p style="margin-bottom: 1rem; line-height: 1.6;">In the aftermath of a catastrophic nuclear containment failure, human intervention is impossible due to lethal ionizing radiation and soaring thermal outputs. The <strong>HackAtom Initiative</strong> deploys a swarm of <em>Quantum Guardian</em> drones—highly autonomous, radiation-hardened units designed to penetrate the breach zone.</p>
+                        <p style="margin-bottom: 0; line-height: 1.6;">Operating entirely on edge-computed static infrastructure to ensure zero latency and uncompromised uptime, the Tactical Hazard Monitor processes raw telemetry data directly from the drone fleet in real-time, mapping deadly radiation hotspots, structural temperatures, and fleet integrity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 6.45 PROTOCOL FLOWCHART SECTION -->
+        <section id="protocol-flowchart" style="padding-bottom: 4rem;">
+            <div class="container">
+                <div class="text-center section-header">
+                    <h2>RESPONSE PROTOCOL</h2>
+                    <p class="section-subtitle">Autonomous Nuclear Emergency Response Sequence</p>
+                </div>
+                
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-node" style="border-color: #00f5ff; box-shadow: 0 0 15px rgba(0,245,255,0.5);">1</div>
+                        <div class="timeline-content glass-panel" style="border-left: 3px solid #00f5ff;">
+                            <h3 style="color: #00f5ff; margin-top: 0; margin-bottom: 10px;">Standby Monitoring Phase</h3>
+                            <p style="margin: 0; color: var(--text-muted); line-height: 1.6;">Continuous observation of baseline environmental conditions such as radiation levels, atmospheric pressure, gas concentration, and thermal activity.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-node" style="border-color: #ff3333; box-shadow: 0 0 15px rgba(255,51,51,0.5);">2</div>
+                        <div class="timeline-content glass-panel" style="border-left: 3px solid #ff3333;">
+                            <h3 style="color: #ff3333; margin-top: 0; margin-bottom: 10px;">Incident Activation Phase</h3>
+                            <p style="margin: 0; color: var(--text-muted); line-height: 1.6;">Once predefined thresholds are exceeded, the system triggers an automated response and rapidly deploys a swarm of autonomous Quantum Guardian drones to the affected area.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-node" style="border-color: #39ff14; box-shadow: 0 0 15px rgba(57,255,20,0.5);">3</div>
+                        <div class="timeline-content glass-panel" style="border-left: 3px solid #39ff14;">
+                            <h3 style="color: #39ff14; margin-top: 0; margin-bottom: 10px;">Data Acquisition Phase</h3>
+                            <p style="margin: 0; color: var(--text-muted); line-height: 1.6;">The drone swarm actively collects multi-modal sensor data including radiation intensity, thermal signatures, toxic gas levels, and structural obstacles.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-node" style="border-color: #b026ff; box-shadow: 0 0 15px rgba(176,38,255,0.5);">4</div>
+                        <div class="timeline-content glass-panel" style="border-left: 3px solid #b026ff;">
+                            <h3 style="color: #b026ff; margin-top: 0; margin-bottom: 10px;">AI Analysis Phase</h3>
+                            <p style="margin: 0; color: var(--text-muted); line-height: 1.6;">All incoming data streams are fused to generate a unified, real-time hazard map. Predictive models estimate the spread of contamination and evolving danger zones.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-node" style="border-color: #ffaa00; box-shadow: 0 0 15px rgba(255,170,0,0.5);">5</div>
+                        <div class="timeline-content glass-panel" style="border-left: 3px solid #ffaa00;">
+                            <h3 style="color: #ffaa00; margin-top: 0; margin-bottom: 10px;">Decision Support Phase</h3>
+                            <p style="margin: 0; color: var(--text-muted); line-height: 1.6;">Optimized evacuation routes and safety corridors are dynamically generated based on current and predicted hazard conditions. Alerts are continuously delivered to emergency response teams.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-node" style="border-color: #00f5ff; box-shadow: 0 0 15px rgba(0,245,255,0.5);">6</div>
+                        <div class="timeline-content glass-panel" style="border-left: 3px solid #00f5ff;">
+                            <h3 style="color: #00f5ff; margin-top: 0; margin-bottom: 10px;">Post-Containment Monitoring Phase</h3>
+                            <p style="margin: 0; color: var(--text-muted); line-height: 1.6;">The system remains active to track environmental recovery and detect residual contamination. Data is stored in a continuous learning database to improve future predictive performance.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- 6.5. TACTICAL HAZARD MONITOR SECTION -->
+        <section id="monitor">
+            <div class="container">
+                <div class="text-center section-header">
+                    <h2>TACTICAL HAZARD MONITOR</h2>
+                    <p class="section-subtitle">Real-time Autonomous Nuclear Telemetry Dashboard</p>
+                </div>
+
+                <!-- Simulation Controls -->
+                <div class="glass-panel simulation-panel" style="margin-bottom: 2rem; border: 1px solid rgba(255, 69, 0, 0.3);">
+                    <div class="sim-header" style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid rgba(255, 69, 0, 0.2);">
+                        <h3 style="margin: 0; color: var(--neon-red); display: flex; align-items: center; gap: 10px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            SCENARIO SIMULATOR
+                        </h3>
+                        <button id="btn-trigger-meltdown" style="background: rgba(255, 69, 0, 0.1); border: 1px solid var(--neon-red); color: var(--neon-red); padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;">TRIGGER REACTOR MELTDOWN</button>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <p class="sim-desc" style="margin: 0; color: var(--text-muted);">Activate the simulation to test the Quantum Guardian swarm's response to an unexpected containment breach. This will instantly spike environmental variance, flood the system with critical anomalies, and trigger emergency visual and audio protocols.</p>
+                    </div>
+                </div>
+
+                <!-- Stats counters grid -->
+                <div class="monitor-stats-grid">
+                    <div class="stat-card glass-panel text-center">
+                        <h3 class="stat-number" id="mon-avg-rad">0.00 Sv/h</h3>
+                        <p class="stat-label">Average Radiation</p>
+                    </div>
+                    <div class="stat-card glass-panel text-center">
+                        <h3 class="stat-number text-danger" id="mon-high-risk">0</h3>
+                        <p class="stat-label">High Risk Zones</p>
+                    </div>
+                    <div class="stat-card glass-panel text-center">
+                        <h3 class="stat-number text-warning" id="mon-hotspots">0</h3>
+                        <p class="stat-label">Thermal Hotspots</p>
+                    </div>
+                    <div class="stat-card glass-panel text-center">
+                        <h3 class="stat-number text-cyan" id="mon-dust-alerts">0</h3>
+                        <p class="stat-label">Dust Storm Alerts</p>
+                    </div>
+                </div>
+
+                <!-- Parameters Control & Heatmaps Dashboard Grid -->
+                <div class="monitor-dashboard-grid">
+                    <!-- Sidebar parameters controls -->
+                    <div class="monitor-control-sidebar glass-panel">
+                        <div class="hud-corners">
+                            <div class="c-tl"></div><div class="c-tr"></div>
+                            <div class="c-bl"></div><div class="c-br"></div>
+                        </div>
+                        <h3>CONTROLS</h3>
+                        
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="lbl">ACTIVE FLEET SIZE</span>
+                                <span class="val" id="val-fleet-size">200</span>
+                            </div>
+                            <input type="range" id="slide-fleet-size" min="50" max="300" step="10" value="200">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="lbl">SENSOR VARIANCE</span>
+                                <span class="val" id="val-variance">1.0</span>
+                            </div>
+                            <input type="range" id="slide-variance" min="0.0" max="2.0" step="0.1" value="1.0">
+                        </div>
+                        
+                        <div class="sidebar-status-meta">
+                            <div>SYSTEM VERSION: v2.4.5</div>
+                            <div>CLOUD LINK: SECURE</div>
+                            <div>SENSORS ACTIVE: 8/8</div>
+                        </div>
+                    </div>
+
+                    <!-- Volumetric density Heatmaps -->
+                    <div class="monitor-heatmaps-container">
+                        <!-- Heatmap 1: Radiation Matrix -->
+                        <div class="heatmap-panel glass-panel">
+                            <div class="hud-corners">
+                                <div class="c-tl"></div><div class="c-tr"></div>
+                                <div class="c-bl"></div><div class="c-br"></div>
+                            </div>
+                            <div class="heatmap-header">
+                                <span>☢ Radiation Mapping Matrix</span>
+                                <span class="heatmap-val-lbl">Sv/h</span>
+                            </div>
+                            <div class="heatmap-canvas-container" id="rad-heatmap-wrapper">
+                                <canvas id="rad-heatmap-canvas"></canvas>
+                                <!-- Interactive custom tooltip overlay -->
+                                <div class="heatmap-tooltip" id="rad-tooltip"></div>
+                            </div>
+                        </div>
+
+                        <!-- Heatmap 2: Volumetric Thermal Map -->
+                        <div class="heatmap-panel glass-panel">
+                            <div class="hud-corners">
+                                <div class="c-tl"></div><div class="c-tr"></div>
+                                <div class="c-bl"></div><div class="c-br"></div>
+                            </div>
+                            <div class="heatmap-header">
+                                <span>🌡️ Volumetric Thermal & Fire Map</span>
+                                <span class="heatmap-val-lbl">°C</span>
+                            </div>
+                            <div class="heatmap-canvas-container" id="temp-heatmap-wrapper">
+                                <canvas id="temp-heatmap-canvas"></canvas>
+                                <div class="heatmap-tooltip" id="temp-tooltip"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alert feed log console -->
+                <div class="monitor-console-section glass-panel">
+                    <div class="hud-corners">
+                        <div class="c-tl"></div><div class="c-tr"></div>
+                        <div class="c-bl"></div><div class="c-br"></div>
+                    </div>
+                    <div class="diag-header">
+                        <span class="diag-indicator danger-pulse"></span>
+                        <h3>🚨 QUANTUM GUARDIAN ALERT CONSOLE FEED</h3>
+                    </div>
+                    <div class="monitor-console-box" id="mon-console-feed">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Searchable Telemetry Data Table Section -->
+                <div class="monitor-table-section glass-panel">
+                    <div class="hud-corners">
+                        <div class="c-tl"></div><div class="c-tr"></div>
+                        <div class="c-bl"></div><div class="c-br"></div>
+                    </div>
+                    <div class="table-header-control">
+                        <h3>📡 Active Drone Telemetry Matrix</h3>
+                        <div class="table-search-box">
+                            <input type="text" id="table-search-input" placeholder="Search Drone ID or Risk...">
+                        </div>
+                    </div>
+                    <div class="table-responsive-wrapper">
+                        <table class="telemetry-data-table">
+                            <thead>
+                                <tr>
+                                    <th data-sort="Drone_ID" class="sortable">Drone ID <span class="sort-icon">⇅</span></th>
+                                    <th data-sort="X" class="sortable">X <span class="sort-icon">⇅</span></th>
+                                    <th data-sort="Y" class="sortable">Y <span class="sort-icon">⇅</span></th>
+                                    <th data-sort="Radiation" class="sortable">Radiation (Sv/h) <span class="sort-icon">⇅</span></th>
+                                    <th data-sort="Thermal_Temp" class="sortable">Thermal Temp (°C) <span class="sort-icon">⇅</span></th>
+                                    <th data-sort="Flame" class="sortable">Flame <span class="sort-icon">⇅</span></th>
+                                    <th data-sort="Pressure" class="sortable">Pressure (hPa) <span class="sort-icon">⇅</span></th>
+                                    <th data-sort="Gyroscope" class="sortable">Gyro stability <span class="sort-icon">⇅</span></th>
+                                    <th data-sort="Obstacle_Distance" class="sortable">Obstacle Dist (m) <span class="sort-icon">⇅</span></th>
+                                    <th data-sort="Danger_Level" class="sortable">Danger Level <span class="sort-icon">⇅</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="telemetry-table-body">
+                                <!-- Telemetry rows populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Table Pagination UI -->
+                    <div class="table-pagination-control">
+                        <button id="table-btn-prev" class="btn btn-secondary btn-sm">◄ PREV</button>
+                        <span class="pagination-info" id="table-pagination-info">Page 1 of X</span>
+                        <button id="table-btn-next" class="btn btn-secondary btn-sm">NEXT ►</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- 7. PRACTICAL IMPLEMENTATION SECTION -->
         <section id="implementation">
             <div class="container grid-2">
@@ -745,15 +999,44 @@
                 <span>SIMULATION ACTIVE: REACTOR COLLAPSE SCENARIO</span>
             </div>
 
-            <!-- Cockpit view HUD lines -->
-            <div class="sim-crosshair">
-                <div class="ch-h"></div>
-                <div class="ch-v"></div>
-            </div>
-
-            <!-- Drone logs -->
-            <div class="sim-telemetry-feed" id="sim-telemetry">
-                <div>[SYSTEM] Initiating drone mock deployment...</div>
+            <!-- Dashboard visual layout -->
+            <div class="sim-layout-grid">
+                <!-- 2D flight map -->
+                <div class="sim-panel sim-map-panel glass-panel">
+                    <div class="hud-corners">
+                        <div class="c-tl"></div><div class="c-tr"></div>
+                        <div class="c-bl"></div><div class="c-br"></div>
+                    </div>
+                    <div class="sim-panel-title">HOLOGRAPHIC TRAJECTORY MAP</div>
+                    <div class="sim-canvas-wrapper">
+                        <canvas id="sim-map-canvas"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Chart and console -->
+                <div class="sim-info-panel">
+                    <div class="sim-panel sim-chart-panel glass-panel">
+                        <div class="hud-corners">
+                            <div class="c-tl"></div><div class="c-tr"></div>
+                            <div class="c-bl"></div><div class="c-br"></div>
+                        </div>
+                        <div class="sim-panel-title">TELEMETRY CHART (RADIATION / TEMP)</div>
+                        <div class="sim-canvas-wrapper">
+                            <canvas id="sim-chart-canvas"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="sim-panel sim-log-panel glass-panel">
+                        <div class="hud-corners">
+                            <div class="c-tl"></div><div class="c-tr"></div>
+                            <div class="c-bl"></div><div class="c-br"></div>
+                        </div>
+                        <div class="sim-panel-title">DRONE TELEMETRY LOGS</div>
+                        <div class="sim-telemetry-feed" id="sim-telemetry">
+                            <div>[SYSTEM] Initiating drone mock deployment...</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="sim-metrics">
@@ -765,6 +1048,34 @@
             <div class="sim-controls-panel">
                 <div class="sim-desc-label">Drone is navigating reactor layout using computed path...</div>
                 <button class="btn btn-danger" id="btn-abort-simulation">ABORT SIMULATION</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOBILE NAVIGATION MENU OVERLAY -->
+    <div id="mobile-nav-overlay" class="mobile-nav-overlay">
+        <div class="mobile-nav-content glass-panel">
+            <button id="mobile-nav-close" class="close-btn" aria-label="Close menu">&times;</button>
+            <div class="mobile-logo">
+                <svg viewBox="0 0 100 100" class="header-logo-icon">
+                    <polygon points="50,18 80,72 20,72" stroke="#00f5ff" stroke-width="2" fill="none" />
+                    <circle cx="50" cy="50" r="15" stroke="#39ff14" stroke-width="1.5" fill="none" />
+                </svg>
+                <span class="mobile-logo-text">QUANTUM GUARDIAN</span>
+            </div>
+            <div class="mobile-nav-links">
+                <a href="#hero" class="mob-link">TELEMETRY</a>
+                <a href="#problem" class="mob-link">THREATS</a>
+                <a href="#solution" class="mob-link">SYSTEM</a>
+                <a href="#superposition" class="mob-link">QUANTUM NAV</a>
+                <a href="#sensors" class="mob-link">SENSORS</a>
+                <a href="#pipeline" class="mob-link">PIPELINE</a>
+                <a href="#monitor" class="mob-link">MONITOR</a>
+                <a href="#implementation" class="mob-link">SPECS</a>
+            </div>
+            <div class="mobile-system-status">
+                <span class="status-pulse"></span>
+                <span>SYSTEM ONLINE</span>
             </div>
         </div>
     </div>
